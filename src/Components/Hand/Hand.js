@@ -7,10 +7,10 @@ class Hand extends React.Component {
     const cardGrid = 6
     let cardOverflow
     switch (this.props.cards.length) {
-      case 1: case 2: case 3:
+      case 1: case 2:
         cardOverflow = 7
         break
-      case 4:
+      case 3: case 4:
         cardOverflow = 4
         break
       case 5: case 6:
@@ -45,7 +45,7 @@ class Hand extends React.Component {
       <div className={styles.Hand} style={{ width: `calc(${this.props.cardWidth} * ${widthRate})` }}>
         {
           this.props.cards.map((card, i) =>
-            <Card key={card.key} style={{
+            <Card key={card.key} num={i + 1} cardWidth={this.props.cardWidth} style={{
               gridColumn: this.calculateColumn(i),
               transform: this.calculateRotate(i + 1),
               transformOrigin: this.calculateOrigin(i + 1)
