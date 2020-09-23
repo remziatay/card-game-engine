@@ -1,5 +1,6 @@
 .Hand {
   display: grid;
+  margin-bottom: -20px;
   transition: width 0.25s;
 }
 

@@ -52,11 +52,11 @@ class Card extends React.Component {
   }
 
   render () {
-    let style = { }
+    let style = {}
     if (this.state.focused) {
       style = {
         left: this.state.center - 2.5 * this.props.cardWidth / 2,
-        bottom: '20%'
+        bottom: '5%'
       }
     } else if (this.state.picked) {
       style = {
