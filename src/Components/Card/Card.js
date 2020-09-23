@@ -1,4 +1,5 @@
 import React from 'react'
+import cumulativeRafSchd from '../../lib/cumulativeRafSchd'
 import styles from './Card.module.css'
 
 class Card extends React.Component {
@@ -28,6 +29,11 @@ class Card extends React.Component {
 
   drag = evt => {
     if (!this.dragStarted) return
+    evt.persist()
+    this.pickDragging(evt)
+  }
+
+  pickDragging = cumulativeRafSchd(evt => {
     if (!this.dragging) {
       this.dragging = true
       this.setState({ picked: true, focused: false })
@@ -36,7 +42,7 @@ class Card extends React.Component {
       x: evt.pageX - 2.5 * this.props.cardWidth / 2,
       y: evt.pageY - 2.5 * this.props.style.height / 2
     })
-  }
+  })
 
   endDrag = () => {
     this.dragStarted = false
