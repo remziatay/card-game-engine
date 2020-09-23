@@ -30,7 +30,8 @@ class Hand extends React.Component {
     const middle = (this.props.cards.length + 1) / 2
     if (n === middle || this.getGrid().cardGrid <= this.getGrid().cardOverflow) return 'rotate(0)'
     const degree = Math.sign(n - middle) * 2 + Math.trunc(n - middle) * 3
-    return `rotate(${degree}deg)`
+    const push = Math.abs(n - middle) ** 3 * 0.05
+    return `rotate(${degree}deg) translateY(${push}%)`
   }
 
   calculateOrigin = n => {
@@ -45,10 +46,11 @@ class Hand extends React.Component {
       <div className={styles.Hand} style={{ width: `calc(${this.props.cardWidth} * ${widthRate})` }}>
         {
           this.props.cards.map((card, i) =>
-            <Card key={card.key} num={i + 1} cardWidth={this.props.cardWidth} style={{
+            <Card key={card.key} num={i + 1} cardWidth={parseFloat(this.props.cardWidth)} style={{
               gridColumn: this.calculateColumn(i),
               transform: this.calculateRotate(i + 1),
-              transformOrigin: this.calculateOrigin(i + 1)
+              transformOrigin: this.calculateOrigin(i + 1),
+              height: 1.5 * parseFloat(this.props.cardWidth)
             }}/>
           )
         }
