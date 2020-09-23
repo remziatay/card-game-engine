@@ -45,6 +45,7 @@ class Card extends React.Component {
   })
 
   endDrag = () => {
+    this.pickDragging.cancel()
     this.dragStarted = false
     this.dragging = false
     this.setState({ picked: false })
