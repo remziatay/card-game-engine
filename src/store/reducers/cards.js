@@ -17,6 +17,7 @@ const initialState = {
   pickedCard: null,
   pickedCardPosition: null,
   pickedCardRotation: { x: 0, y: 0 },
+  perspectiveOrigin: { x: 'center', y: 'center' },
   pickedCardWidth: 120
 }
 
@@ -53,16 +54,31 @@ function pickCard (state) {
 function moveCard (state, action) {
   const x = action.x - state.pickedCardWidth / 2
   const y = action.y - state.pickedCardWidth * state.cardRatio / 2
-  const rotateX = state.pickedCardPosition ? x - state.pickedCardPosition.x : 0
-  const rotateY = state.pickedCardPosition ? y - state.pickedCardPosition.y : 0
-  return updateObject(state, {
+  const diffX = state.pickedCardPosition ? x - state.pickedCardPosition.x : 0
+  const diffY = state.pickedCardPosition ? y - state.pickedCardPosition.y : 0
+  const changes = {
     pickedCardPosition: { x, y },
-    pickedCardRotation: { x: -rotateY, y: rotateX }
-  })
+    pickedCardRotation: { x: -diffY * 1.5, y: diffX * 1.5 }
+  }
+  if (state.perspectiveOrigin.x === 'center') changes.perspectiveOrigin = { x: action.x, y: action.y }
+  else {
+    const diffX = state.perspectiveOrigin.x - action.x
+    const diffY = state.perspectiveOrigin.y - action.y
+    if (diffX ** 2 + diffY ** 2 > 100 ** 2) {
+      console.log('yo')
+      changes.perspectiveOrigin = { x: action.x, y: action.y }
+    }
+  }
+  return updateObject(state, changes)
 }
 
 function unpickCard (state) {
-  return updateObject(state, { pickedCard: null })
+  return updateObject(state, {
+    pickedCard: null,
+    pickedCardPosition: null,
+    pickedCardRotation: { x: 0, y: 0 },
+    perspectiveOrigin: { x: 'center', y: 'center' }
+  })
 }
 
 function putCard (state) {
@@ -70,7 +86,10 @@ function putCard (state) {
   return updateObject(state, {
     board: state.board.concat(state.pickedCard),
     hand: state.hand.filter(card => card.key !== state.pickedCard.key),
-    pickedCard: null
+    pickedCard: null,
+    pickedCardPosition: null,
+    pickedCardRotation: { x: 0, y: 0 },
+    perspectiveOrigin: { x: 'center', y: 'center' }
   })
 }
 
