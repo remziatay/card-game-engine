@@ -24,7 +24,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.DRAW_CARD: return drawRandomCard(state)
     case actionTypes.FOCUS_CARD: return updateObject(state, { focusedCard: action.card })
     case actionTypes.PICK_CARD: return pickCard(state)
-    case actionTypes.UNPICK_CARD: return updateObject(state, { pickedCard: null })
+    case actionTypes.UNPICK_CARD: return unpickCard(state)
     case actionTypes.MOVE_CARD: return moveCard(state, action)
     case actionTypes.PUT_CARD: return putCard(state)
     default: return state
@@ -32,6 +32,7 @@ const reducer = (state = initialState, action) => {
 }
 
 function drawRandomCard (state) {
+  if (state.hand.length === 9) return state
   const random = Math.floor(Math.random() * state.deck.length)
   const randomCard = state.deck[random]
   return updateObject(state, {
@@ -56,9 +57,14 @@ function moveCard (state, action) {
   })
 }
 
+function unpickCard (state) {
+  return updateObject(state, { pickedCard: null })
+}
+
 function putCard (state) {
+  if (state.board.length === 5) return unpickCard(state)
   return updateObject(state, {
-    board: state.board.concat(state.hand.find(card => card.key === state.pickedCard)),
+    board: state.board.concat(state.pickedCard),
     hand: state.hand.filter(card => card.key !== state.pickedCard.key),
     pickedCard: null
   })

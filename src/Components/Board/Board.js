@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from '../../store/actions'
+import Card from '../Card/Card'
 import styles from './Board.module.css'
 
 class Board extends React.Component {
@@ -15,13 +16,17 @@ class Board extends React.Component {
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div onMouseUp={this.mouseUp} className={styles.Board}>
-        BOARD
+        {this.props.board.map(card => (<Card key={card.key} info={card} style={{
+          width: 120 + 'px',
+          height: 1.5 * 120 + 'px'
+        }}/>))}
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
+  board: state.cards.board,
   pickedCard: state.cards.pickedCard
 })
 
