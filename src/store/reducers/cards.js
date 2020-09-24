@@ -1,13 +1,13 @@
 import * as actionTypes from '../actions/actionTypes'
 import { updateObject } from '../utility'
 
-const deck = Array(30).fill().map((_, i) => ({
+const initialDeck = Array(30).fill().map((_, i) => ({
   key: i,
   title: `${i}. card`
 }))
 
 const initialState = {
-  deck,
+  deck: initialDeck,
   hand: [],
   board: [],
   pickedCard: null
@@ -24,7 +24,7 @@ const reducer = (state = initialState, action) => {
 
 function drawRandomCard (state) {
   const random = Math.floor(Math.random() * state.deck.length)
-  const randomCard = deck[random]
+  const randomCard = state.deck[random]
   return updateObject(state, {
     deck: [...state.deck.slice(0, random), ...state.deck.slice(random + 1)],
     hand: state.hand.concat(randomCard)
