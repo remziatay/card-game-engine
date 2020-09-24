@@ -6,12 +6,14 @@ import { connect } from 'react-redux'
 import Board from '../Board/Board'
 import Card from '../Card/Card'
 import cumulativeRafSchd from '../../lib/cumulativeRafSchd'
+import { debounce } from '../../lib/util'
 
 class Scene extends React.Component {
   mouseMove = evt => {
     if (this.props.pickedCard) {
       evt.persist()
       this.props.moveCard(evt.pageX, evt.pageY)
+      this.props.resetRotation()
     }
   }
 
@@ -22,6 +24,7 @@ class Scene extends React.Component {
   }
 
   render () {
+    // console.log(`rotateX(${this.props.pickedCardRotation?.x}deg) rotateY(${this.props.pickedCardRotation?.y}deg)`)
     return (
       <>
         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
@@ -33,16 +36,19 @@ class Scene extends React.Component {
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', minWidth: '100%' }}>
             <Hand/>
           </div>
-        </div>
-        {this.props.pickedCard &&
+
+          {this.props.pickedCard &&
         <Card info={this.props.pickedCard} style={{
           position: 'fixed',
           width: this.props.pickedCardWidth,
           height: this.props.pickedCardHeight,
           left: this.props.pickedCardPosition.x,
           top: this.props.pickedCardPosition.y,
+          transform: `rotateX(${this.props.pickedCardRotation.x}deg) rotateY(${this.props.pickedCardRotation.y}deg)`,
+          transition: 'transform 0.1s ease',
           pointerEvents: 'none'
         }}/>}
+        </div>
       </>
     )
   }
@@ -52,13 +58,15 @@ const mapStateToProps = state => ({
   pickedCard: state.cards.pickedCard,
   pickedCardWidth: state.cards.pickedCardWidth,
   pickedCardHeight: state.cards.pickedCardWidth * state.cards.cardRatio,
-  pickedCardPosition: state.cards.pickedCardPosition
+  pickedCardPosition: state.cards.pickedCardPosition,
+  pickedCardRotation: state.cards.pickedCardRotation
 })
 
 const mapDispatchToProps = dispatch => ({
   drawCard: () => dispatch(actionCreators.drawCard()),
   unpickCard: () => dispatch(actionCreators.unpickCard()),
-  moveCard: cumulativeRafSchd((x, y) => dispatch(actionCreators.moveCard(x, y)))
+  moveCard: cumulativeRafSchd((x, y) => dispatch(actionCreators.moveCard(x, y))),
+  resetRotation: debounce(() => { dispatch(actionCreators.resetRotation()) }, 120)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Scene)

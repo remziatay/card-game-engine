@@ -17,8 +17,8 @@ class Board extends React.Component {
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div onMouseUp={this.mouseUp} className={styles.Board}>
         {this.props.board.map(card => (<Card key={card.key} info={card} style={{
-          width: 120 + 'px',
-          height: 1.5 * 120 + 'px'
+          width: this.props.pickedCardWidth + 'px',
+          height: this.props.pickedCardHeight + 'px'
         }}/>))}
       </div>
     )
@@ -27,7 +27,9 @@ class Board extends React.Component {
 
 const mapStateToProps = state => ({
   board: state.cards.board,
-  pickedCard: state.cards.pickedCard
+  pickedCard: state.cards.pickedCard,
+  pickedCardWidth: state.cards.pickedCardWidth,
+  pickedCardHeight: state.cards.pickedCardWidth * state.cards.cardRatio
 })
 
 const mapDispatchToProps = dispatch => ({

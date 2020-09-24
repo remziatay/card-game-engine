@@ -20,6 +20,10 @@ export const moveCard = (x, y) => {
   return { type: actionTypes.MOVE_CARD, x, y }
 }
 
+export const resetRotation = () => {
+  return { type: actionTypes.RESET_ROTATION }
+}
+
 export const putCard = () => {
   return { type: actionTypes.PUT_CARD }
 }
