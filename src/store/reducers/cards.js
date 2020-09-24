@@ -10,7 +10,8 @@ const initialState = {
   deck: initialDeck,
   hand: [],
   board: [],
-  pickedCard: null
+  pickedCard: null,
+  cardGrid: 6
 }
 
 const reducer = (state = initialState, action) => {

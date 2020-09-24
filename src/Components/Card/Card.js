@@ -54,16 +54,16 @@ class Card extends React.Component {
 
   render () {
     let style = {}
-    if (this.state.focused) {
-      style = {
-        left: this.state.center - 2.5 * this.props.cardWidth / 2,
-        bottom: '5%'
-      }
-    } else if (this.props.picked) {
+    if (this.props.picked) {
       style = {
         position: 'fixed',
         left: this.state.x,
         top: this.state.y
+      }
+    } else if (this.state.focused) {
+      style = {
+        left: this.state.center - 2.5 * this.props.cardWidth / 2,
+        bottom: '5%'
       }
     }
     return (
@@ -77,7 +77,7 @@ class Card extends React.Component {
             opacity: (this.state.focused || this.props.picked) ? 0 : 1,
             display: this.props.picked ? 'none' : ''
           }}>
-          {this.props.num}. Card
+          {this.props.info.title}
         </div>
 
         {(this.state.focused || this.props.picked) &&
@@ -89,7 +89,7 @@ class Card extends React.Component {
           pointerEvents: 'none',
           ...style
         }}>
-          {this.state.focused ? 'Focused' : 'Picked'} {this.props.num}. Card
+          {this.state.focused ? 'Focused' : 'Picked'} {this.props.info.title}
         </div>
         }
       </>
