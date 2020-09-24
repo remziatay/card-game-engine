@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "90f1d305bd365b340a8bb67b0ba5cfc8",
+    "revision": "75522ee57333aab7f7fd5c7beda73558",
     "url": "/card-game-engine/index.html"
   },
   {
-    "revision": "1c9c62aec8aee72acf3a",
-    "url": "/card-game-engine/static/css/main.ad6b8342.chunk.css"
+    "revision": "7bae3f21f348e06b1cf0",
+    "url": "/card-game-engine/static/css/main.c25cc534.chunk.css"
   },
   {
     "revision": "7df89e9ec33dd341d16e",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/card-game-engine/static/js/2.25958cb0.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "1c9c62aec8aee72acf3a",
-    "url": "/card-game-engine/static/js/main.3775854e.chunk.js"
+    "revision": "7bae3f21f348e06b1cf0",
+    "url": "/card-game-engine/static/js/main.6e06c88d.chunk.js"
   },
   {
     "revision": "45f1f145cf279279601a",
