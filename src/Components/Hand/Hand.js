@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Card from '../Card/Card'
+import FocusableCard from '../Card/FocusableCard'
 import styles from './Hand.module.css'
 
 class Hand extends React.Component {
@@ -26,23 +26,24 @@ class Hand extends React.Component {
   }
 
   render () {
-    const widthRate = 1 + (this.props.cardCount - 1) * this.props.cardOverflow / this.props.cardGrid
     const filteredHand = this.props.cards.map((card, i) => {
       const picked = this.props.pickedIndex === i
+      const focused = this.props.focusedCard?.key === card.key
       if (this.props.pickedIndex >= 0 && i > this.props.pickedIndex) i--
       return (
-        <Card key={card.key} info={card} picked={picked}
-          cardWidth={parseFloat(this.props.cardWidth)}
+        <FocusableCard key={card.key} info={card} focused={focused} picked={picked}
+          focusedCardWidth={this.props.cardWidth * 2.5}
+          focusedCardHeight={this.props.cardHeight * 2.5}
           style={{
             gridColumn: this.calculateColumn(i),
             transform: this.calculateRotate(i),
             transformOrigin: this.calculateOrigin(i),
-            height: 1.5 * parseFloat(this.props.cardWidth)
+            height: this.props.cardHeight
           }}/>)
     })
 
     return (
-      <div className={styles.Hand} style={{ width: `calc(${this.props.cardWidth} * ${widthRate})` }}>
+      <div className={styles.Hand} style={{ width: `${this.props.cardWidth * this.props.widthRate}px` }}>
         {filteredHand}
       </div>
     )
@@ -59,14 +60,19 @@ const calculateOverFlow = cardCount => {
 }
 
 const mapStateToProps = state => {
-  const pickedIndex = state.cards.hand.findIndex(card => card.key === state.cards.pickedCard)
+  const pickedIndex = state.cards.hand.findIndex(card => card.key === state.cards.pickedCard?.key)
   const cardCount = state.cards.hand.length - (pickedIndex !== -1)
+  const cardOverflow = calculateOverFlow(cardCount)
   return {
     cards: state.cards.hand,
     pickedIndex,
     cardCount,
     cardGrid: state.cards.cardGrid,
-    cardOverflow: calculateOverFlow(cardCount)
+    cardOverflow,
+    focusedCard: state.cards.focusedCard,
+    cardWidth: state.cards.cardWidth,
+    cardHeight: state.cards.cardWidth * state.cards.cardRatio,
+    widthRate: 1 + (cardCount - 1) * cardOverflow / state.cards.cardGrid
   }
 }
 

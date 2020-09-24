@@ -1,3 +1,6 @@
 export const DRAW_CARD = 'DRAW_CARD'
+export const FOCUS_CARD = 'FOCUS_CARD'
 export const PICK_CARD = 'PICK_CARD'
+export const UNPICK_CARD = 'UNPICK_CARD'
+export const MOVE_CARD = 'MOVE_CARD'
 export const PUT_CARD = 'PUT_CARD'

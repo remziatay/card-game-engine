@@ -4,8 +4,20 @@ export const drawCard = () => {
   return { type: actionTypes.DRAW_CARD }
 }
 
-export const pickCard = (key) => {
-  return { type: actionTypes.PICK_CARD, key }
+export const focusCard = (card) => {
+  return { type: actionTypes.FOCUS_CARD, card }
+}
+
+export const pickCard = () => {
+  return { type: actionTypes.PICK_CARD }
+}
+
+export const unpickCard = () => {
+  return { type: actionTypes.UNPICK_CARD }
+}
+
+export const moveCard = (x, y) => {
+  return { type: actionTypes.MOVE_CARD, x, y }
 }
 
 export const putCard = () => {
