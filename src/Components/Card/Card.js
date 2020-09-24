@@ -1,12 +1,13 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import cumulativeRafSchd from '../../lib/cumulativeRafSchd'
 import styles from './Card.module.css'
+import * as actionCreators from '../../store/actions'
 
 class Card extends React.Component {
   state = {
     center: 0,
-    focused: false,
-    picked: false
+    focused: false
   }
 
   capturePointer = evt => { if (evt.buttons === 1) evt.target.setPointerCapture(evt.pointerId) }
@@ -36,7 +37,7 @@ class Card extends React.Component {
   pickDragging = cumulativeRafSchd(evt => {
     if (!this.dragging) {
       this.dragging = true
-      this.setState({ picked: true, focused: false })
+      this.setState({ focused: false }, () => this.props.pickCard(this.props.info.key))
     }
     this.setState({
       x: evt.pageX - 2.5 * this.props.cardWidth / 2,
@@ -48,7 +49,7 @@ class Card extends React.Component {
     this.pickDragging.cancel()
     this.dragStarted = false
     this.dragging = false
-    this.setState({ picked: false })
+    this.props.pickCard(null)
   }
 
   render () {
@@ -58,7 +59,7 @@ class Card extends React.Component {
         left: this.state.center - 2.5 * this.props.cardWidth / 2,
         bottom: '5%'
       }
-    } else if (this.state.picked) {
+    } else if (this.props.picked) {
       style = {
         position: 'fixed',
         left: this.state.x,
@@ -73,13 +74,13 @@ class Card extends React.Component {
           onMouseLeave={this.unfocus} className={styles.Card}
           style={{
             ...this.props.style,
-            opacity: (this.state.focused || this.state.picked) ? 0 : 1,
-            display: this.state.picked ? 'none' : ''
+            opacity: (this.state.focused || this.props.picked) ? 0 : 1,
+            display: this.props.picked ? 'none' : ''
           }}>
           {this.props.num}. Card
         </div>
 
-        {(this.state.focused || this.state.picked) &&
+        {(this.state.focused || this.props.picked) &&
         <div className={styles.Card} style={{
           position: 'absolute',
           width: 2.5 * this.props.cardWidth + 'px',
@@ -96,4 +97,12 @@ class Card extends React.Component {
   }
 }
 
-export default Card
+const mapStateToProps = null && (state => ({
+  pickedCard: state.cards.pickedCard
+}))
+
+const mapDispatchToProps = dispatch => ({
+  pickCard: key => dispatch(actionCreators.pickCard(key))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Card)

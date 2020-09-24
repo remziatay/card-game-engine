@@ -1,6 +1,8 @@
 import React from 'react'
 import Hand from '../Hand/Hand'
 import styles from './Scene.module.css'
+import * as actionCreators from '../../store/actions'
+import { connect } from 'react-redux'
 
 class Scene extends React.Component {
   state = {
@@ -8,16 +10,14 @@ class Scene extends React.Component {
   }
 
   render () {
-    const cards = new Array(this.state.cardCount).fill().map((k, i) => ({ key: i }))
     return (
       <>
         <div className={styles.Scene}>
           <div>
-            <button onClick={() => { this.setState(state => ({ cardCount: state.cardCount + 1 })) }}>+</button>
-            <button onClick={() => { this.setState(state => ({ cardCount: state.cardCount - 1 })) }}>-</button>
+            <button onClick={this.props.drawCard}>Draw Card</button>
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', minWidth: '100%' }}>
-            <Hand cardWidth="100px" cards={cards}/>
+            <Hand cardWidth="100px"/>
           </div>
         </div>
       </>
@@ -25,4 +25,8 @@ class Scene extends React.Component {
   }
 }
 
-export default Scene
+const mapDispatchToProps = dispatch => ({
+  drawCard: () => dispatch(actionCreators.drawCard())
+})
+
+export default connect(null, mapDispatchToProps)(Scene)
