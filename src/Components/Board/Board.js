@@ -36,6 +36,7 @@ class Board extends React.Component {
   mouseUp = evt => {
     evt.stopPropagation()
     if (this.props.pickedCard) {
+      this.orderFakeCard.cancel()
       this.props.putCard()
     }
   }

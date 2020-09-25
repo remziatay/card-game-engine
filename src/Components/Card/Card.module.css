@@ -3,4 +3,6 @@
   border: 2px solid black;
   color: black;
   user-select: none;
+  box-shadow: 0 0 4px 0;
+  transition: transform 0.05s ease;
 }

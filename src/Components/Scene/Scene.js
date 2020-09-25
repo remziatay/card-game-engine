@@ -51,8 +51,7 @@ class Scene extends React.Component {
             <Card info={this.props.pickedCard} style={{
               width: this.props.pickedCardWidth,
               height: this.props.pickedCardHeight,
-              transform: this.props.pickedCardRotation,
-              transition: 'transform 0.05s ease'
+              transform: this.props.pickedCardRotation
             }}/>
           </div>
         }

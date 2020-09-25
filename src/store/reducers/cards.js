@@ -7,6 +7,8 @@ const initialDeck = Array(30).fill().map((_, i) => ({
   title: `${i}. card`
 }))
 
+const originalRotation = { x: 15, y: 0 }
+
 const initialState = {
   deck: initialDeck,
   hand: [],
@@ -17,7 +19,7 @@ const initialState = {
   focusedCard: null,
   pickedCard: null,
   pickedCardPosition: null,
-  pickedCardRotation: { x: 0, y: 0 },
+  pickedCardRotation: originalRotation,
   pickedCardWidth: 120,
   fakeCardIndex: null
 }
@@ -29,7 +31,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.PICK_CARD: return pickCard(state)
     case actionTypes.UNPICK_CARD: return unpickCard(state)
     case actionTypes.MOVE_CARD: return moveCard(state, action)
-    case actionTypes.RESET_ROTATION: return updateObject(state, { pickedCardRotation: { x: 0, y: 0 } })
+    case actionTypes.RESET_ROTATION: return updateObject(state, { pickedCardRotation: originalRotation })
     case actionTypes.MOVE_FAKE_CARD: return updateObject(state, { fakeCardIndex: action.index })
     case actionTypes.PUT_CARD: return putCard(state)
     default: return state
@@ -61,8 +63,8 @@ function moveCard (state, action) {
   return updateObject(state, {
     pickedCardPosition: { x, y },
     pickedCardRotation: {
-      x: clamp(-diffY * 1.5, -30, 30),
-      y: clamp(diffX * 1.5, -30, 30)
+      x: originalRotation.x + clamp(-diffY * 1.5, -30, 30),
+      y: originalRotation.y + clamp(diffX * 1.5, -30, 30)
     }
   })
 }
@@ -71,7 +73,7 @@ function unpickCard (state) {
   return updateObject(state, {
     pickedCard: null,
     pickedCardPosition: null,
-    pickedCardRotation: { x: 0, y: 0 },
+    pickedCardRotation: originalRotation,
     fakeCardIndex: null
   })
 }
@@ -83,7 +85,7 @@ function putCard (state) {
     hand: state.hand.filter(card => card.key !== state.pickedCard.key),
     pickedCard: null,
     pickedCardPosition: null,
-    pickedCardRotation: { x: 0, y: 0 },
+    pickedCardRotation: originalRotation,
     fakeCardIndex: null
   })
 }
