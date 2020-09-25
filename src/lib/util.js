@@ -5,3 +5,9 @@ export const debounce = (func, wait = 250, timeout) => (...args) => {
     func(...args)
   }, wait)
 }
+
+export const clamp = (number, lower, upper) => {
+  if (number > upper) return upper
+  if (number < lower) return lower
+  return number
+}

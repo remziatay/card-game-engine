@@ -23,13 +23,15 @@ class Scene extends React.Component {
     }
   }
 
+  capturePointer = evt => null // (evt.buttons === 1) ?? evt.target.setPointerCapture(evt.pointerId)
+  releasePointer = evt => null // evt.target.releasePointerCapture(evt.pointerId)
+
   render () {
     return (
       <>
         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-        <div onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} className={styles.Scene} style={{
-          perspectiveOrigin: this.props.perspectiveOrigin
-        }}>
+        <div /* onPointerDown={this.capturePointer} onPointerUp={this.releasePointer} */
+          onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} className={styles.Scene} >
           <div>
             <button onClick={this.props.drawCard}>Draw Card</button>
           </div>
@@ -39,16 +41,24 @@ class Scene extends React.Component {
           </div>
 
           {this.props.pickedCard &&
-        <Card info={this.props.pickedCard} style={{
-          position: 'fixed',
-          width: this.props.pickedCardWidth,
-          height: this.props.pickedCardHeight,
-          left: this.props.pickedCardPosition.x,
-          top: this.props.pickedCardPosition.y,
-          transform: `rotateX(${this.props.pickedCardRotation.x}deg) rotateY(${this.props.pickedCardRotation.y}deg)`,
-          // transition: 'transform 0.1s ease',
-          pointerEvents: 'none'
-        }}/>}
+          <div style={{
+            position: 'fixed',
+            left: this.props.pickedCardPosition.x,
+            top: this.props.pickedCardPosition.y,
+            border: 'none',
+            perspective: '500px',
+            pointerEvents: 'none',
+            width: this.props.pickedCardWidth,
+            height: this.props.pickedCardHeight
+          }}>
+            <Card info={this.props.pickedCard} style={{
+              width: this.props.pickedCardWidth,
+              height: this.props.pickedCardHeight,
+              transform: this.props.pickedCardRotation,
+              transition: 'transform 0.05s ease'
+            }}/>
+          </div>
+          }
         </div>
       </>
     )
@@ -60,8 +70,7 @@ const mapStateToProps = state => ({
   pickedCardWidth: state.cards.pickedCardWidth,
   pickedCardHeight: state.cards.pickedCardWidth * state.cards.cardRatio,
   pickedCardPosition: state.cards.pickedCardPosition,
-  pickedCardRotation: state.cards.pickedCardRotation,
-  perspectiveOrigin: `${state.cards.perspectiveOrigin.x}px ${state.cards.perspectiveOrigin.y}px`
+  pickedCardRotation: `rotateX(${state.cards.pickedCardRotation.x}deg) rotateY(${state.cards.pickedCardRotation.y}deg)`
 })
 
 const mapDispatchToProps = dispatch => ({
