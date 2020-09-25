@@ -5,5 +5,6 @@ export {
   unpickCard,
   moveCard,
   resetRotation,
+  moveFakeCard,
   putCard
 } from './cards'

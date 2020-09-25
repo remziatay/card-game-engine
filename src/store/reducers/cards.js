@@ -18,7 +18,8 @@ const initialState = {
   pickedCard: null,
   pickedCardPosition: null,
   pickedCardRotation: { x: 0, y: 0 },
-  pickedCardWidth: 120
+  pickedCardWidth: 120,
+  fakeCardIndex: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -29,6 +30,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.UNPICK_CARD: return unpickCard(state)
     case actionTypes.MOVE_CARD: return moveCard(state, action)
     case actionTypes.RESET_ROTATION: return updateObject(state, { pickedCardRotation: { x: 0, y: 0 } })
+    case actionTypes.MOVE_FAKE_CARD: return updateObject(state, { fakeCardIndex: action.index })
     case actionTypes.PUT_CARD: return putCard(state)
     default: return state
   }
@@ -69,18 +71,20 @@ function unpickCard (state) {
   return updateObject(state, {
     pickedCard: null,
     pickedCardPosition: null,
-    pickedCardRotation: { x: 0, y: 0 }
+    pickedCardRotation: { x: 0, y: 0 },
+    fakeCardIndex: null
   })
 }
 
 function putCard (state) {
   if (state.board.length === 5) return unpickCard(state)
   return updateObject(state, {
-    board: state.board.concat(state.pickedCard),
+    board: [...state.board.slice(0, state.fakeCardIndex), state.pickedCard, ...state.board.slice(state.fakeCardIndex)],
     hand: state.hand.filter(card => card.key !== state.pickedCard.key),
     pickedCard: null,
     pickedCardPosition: null,
-    pickedCardRotation: { x: 0, y: 0 }
+    pickedCardRotation: { x: 0, y: 0 },
+    fakeCardIndex: null
   })
 }
 

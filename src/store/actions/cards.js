@@ -24,6 +24,10 @@ export const resetRotation = () => {
   return { type: actionTypes.RESET_ROTATION }
 }
 
+export const moveFakeCard = (index) => {
+  return { type: actionTypes.MOVE_FAKE_CARD, index }
+}
+
 export const putCard = () => {
   return { type: actionTypes.PUT_CARD }
 }

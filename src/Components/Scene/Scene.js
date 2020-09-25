@@ -23,15 +23,11 @@ class Scene extends React.Component {
     }
   }
 
-  capturePointer = evt => null // (evt.buttons === 1) ?? evt.target.setPointerCapture(evt.pointerId)
-  releasePointer = evt => null // evt.target.releasePointerCapture(evt.pointerId)
-
   render () {
     return (
       <>
         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-        <div /* onPointerDown={this.capturePointer} onPointerUp={this.releasePointer} */
-          onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} className={styles.Scene} >
+        <div onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} className={styles.Scene} >
           <div>
             <button onClick={this.props.drawCard}>Draw Card</button>
           </div>
@@ -39,8 +35,9 @@ class Scene extends React.Component {
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', minWidth: '100%' }}>
             <Hand/>
           </div>
+        </div>
 
-          {this.props.pickedCard &&
+        {this.props.pickedCard &&
           <div style={{
             position: 'fixed',
             left: this.props.pickedCardPosition.x,
@@ -58,8 +55,7 @@ class Scene extends React.Component {
               transition: 'transform 0.05s ease'
             }}/>
           </div>
-          }
-        </div>
+        }
       </>
     )
   }
