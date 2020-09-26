@@ -3,6 +3,10 @@
   border: 2px solid black;
   color: black;
   user-select: none;
-  box-shadow: 0 0 4px 0;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.75);
   transition: transform 0.05s ease;
+}
+
+.Empty {
+  background: none;
 }

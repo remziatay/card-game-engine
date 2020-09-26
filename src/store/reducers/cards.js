@@ -21,7 +21,8 @@ const initialState = {
   pickedCardPosition: null,
   pickedCardRotation: originalRotation,
   pickedCardWidth: 120,
-  fakeCardIndex: null
+  fakeCardIndex: null,
+  cardShadowColor: 'aqua'
 }
 
 const reducer = (state = initialState, action) => {
@@ -39,7 +40,7 @@ const reducer = (state = initialState, action) => {
 }
 
 function drawRandomCard (state) {
-  if (state.hand.length === 9) return state
+  if (state.hand.length === 9 || state.deck.length === 0) return state
   const random = Math.floor(Math.random() * state.deck.length)
   const randomCard = state.deck[random]
   return updateObject(state, {

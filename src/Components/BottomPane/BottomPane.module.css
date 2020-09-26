@@ -1,0 +1,12 @@
+.BottomPane {
+  display: grid;
+  grid-template-columns: 1fr 5fr 1fr;
+  align-items: center;
+  justify-content: space-around;
+  border: 2px solid yellow;
+}
+
+.Container {
+  display: flex;
+  justify-content: center;
+}

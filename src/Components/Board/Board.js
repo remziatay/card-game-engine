@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import cumulativeRafSchd from '../../lib/cumulativeRafSchd'
-import * as actionCreators from '../../store/actions'
+import { actionCreators } from '../../store/actions'
 import Card from '../Card/Card'
 import styles from './Board.module.css'
 
@@ -55,9 +55,8 @@ class Board extends React.Component {
 
   render () {
     const fakeCard = this.props.fakeCard && (
-      <div key='fakeCard' style={{
+      <Card empty key='fakeCard' style={{
         order: this.props.fakeCardOrder,
-        border: '1px solid purple',
         width: this.props.pickedCardWidth + 'px',
         height: this.props.pickedCardHeight + 'px'
       }}/>

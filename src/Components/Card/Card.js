@@ -5,8 +5,8 @@ class Card extends React.Component {
   render () {
     return (
       <>
-        <div className={styles.Card} style={this.props.style} {...this.props.passProps}>
-          {this.props.info.title}
+        <div className={`${styles.Card} ${this.props.empty ? styles.Empty : ''}`} style={this.props.style} {...this.props.passProps}>
+          {this.props.info?.title}
         </div>
       </>
     )

@@ -1,12 +1,12 @@
 import React from 'react'
-import Hand from '../Hand/Hand'
 import styles from './Scene.module.css'
-import * as actionCreators from '../../store/actions'
+import { actionCreators } from '../../store/actions'
 import { connect } from 'react-redux'
 import Board from '../Board/Board'
 import Card from '../Card/Card'
 import cumulativeRafSchd from '../../lib/cumulativeRafSchd'
 import { debounce } from '../../lib/util'
+import BottomPane from '../BottomPane/BottomPane'
 
 class Scene extends React.Component {
   mouseMove = evt => {
@@ -32,9 +32,7 @@ class Scene extends React.Component {
             <button onClick={this.props.drawCard}>Draw Card</button>
           </div>
           <Board/>
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', minWidth: '100%' }}>
-            <Hand/>
-          </div>
+          <BottomPane/>
         </div>
 
         {this.props.pickedCard &&

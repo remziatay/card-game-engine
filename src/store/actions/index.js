@@ -1,10 +1,3 @@
-export {
-  drawCard,
-  focusCard,
-  pickCard,
-  unpickCard,
-  moveCard,
-  resetRotation,
-  moveFakeCard,
-  putCard
-} from './cards'
+import * as cards from './cards'
+
+export const actionCreators = { ...cards }

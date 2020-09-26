@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import * as actionCreators from '../../store/actions'
+import { actionCreators } from '../../store/actions'
 import Card from './Card'
 
 class FocusableCard extends React.Component {
