@@ -4,6 +4,46 @@ import FocusableCard from '../Card/FocusableCard'
 import styles from './Hand.module.css'
 
 class Hand extends React.Component {
+  state={
+    lastCard: null
+  }
+
+  setRef = ref => {
+    this.setState({ lastCard: ref })
+  }
+
+  componentDidUpdate () {
+    if (!this.state.lastCard) return
+    const card = this.state.lastCard
+    const rect = card.getBoundingClientRect()
+    const steps = [[991, 458], [600, 50]]
+    card.animate([
+      {
+        position: 'relative',
+        left: steps[0][0] - rect.left + 'px',
+        bottom: -(steps[0][1] - rect.top) + 'px',
+        transform: 'none',
+        width: this.props.cardWidth + 'px',
+        height: this.props.cardHeight + 'px'
+      },
+      {
+        offset: 0.5,
+        position: 'relative',
+        left: steps[1][0] - rect.left + 'px',
+        bottom: -(steps[1][1] - rect.top) + 'px',
+        transform: 'none',
+        width: 2.5 * this.props.cardWidth + 'px',
+        height: 2.5 * this.props.cardHeight + 'px'
+      },
+      {
+        position: 'relative',
+        left: '0px',
+        bottom: '0px'
+      }
+    ], 3000)
+    this.setState({ lastCard: null })
+  }
+
   calculateColumn = n => {
     const start = this.props.cardOverflow * n + 1
     return `${start} / ${start + this.props.cardGrid}`
@@ -29,21 +69,26 @@ class Hand extends React.Component {
     const filteredHand = this.props.cards.map((card, i) => {
       const picked = this.props.pickedIndex === i
       const focused = this.props.focusedCard?.key === card.key
+      const last = i === this.props.cards.length - 1
       if (this.props.pickedIndex >= 0 && i > this.props.pickedIndex) i--
       return (
-        <FocusableCard key={card.key} info={card} focused={focused} picked={picked}
+        <FocusableCard {...(last ? { setRef: this.setRef } : {})} key={card.key} info={card} focused={focused} picked={picked}
           focusedCardWidth={this.props.cardWidth * 2.5}
           focusedCardHeight={this.props.cardHeight * 2.5}
           style={{
             gridColumn: this.calculateColumn(i),
             transform: this.calculateRotate(i),
             transformOrigin: this.calculateOrigin(i),
+            width: this.props.cardWidth,
             height: this.props.cardHeight
           }}/>)
     })
 
     return (
-      <div className={styles.Hand} style={{ width: `${this.props.cardWidth * this.props.widthRate}px` }}>
+      <div className={styles.Hand} style={{
+        width: `${this.props.cardWidth * this.props.widthRate}px`,
+        height: `${this.props.cardHeight}px`
+      }}>
         {filteredHand}
       </div>
     )

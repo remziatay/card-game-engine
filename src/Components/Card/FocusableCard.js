@@ -29,7 +29,8 @@ class FocusableCard extends React.Component {
       tabIndex: 0,
       onMouseDown: this.mouseDown,
       onMouseEnter: this.focus,
-      onMouseLeave: this.unfocus
+      onMouseLeave: this.unfocus,
+      ref: this.props.setRef
     }
     return (
       <>

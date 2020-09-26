@@ -4,16 +4,26 @@ import { actionCreators } from '../../../store/actions'
 import Card from '../../Card/Card'
 
 class Deck extends React.Component {
+  setRef = ref => {
+    this.card = ref
+  }
+
+  componentDidMount () {
+    const rect = this.card.getBoundingClientRect()
+    console.log(rect)
+  }
+
   render () {
     return (
       <div>
-        <Card empty={this.props.empty} style={{
-          border: 'none',
-          width: this.props.cardWidth,
-          height: this.props.cardHeight,
-          boxShadow: this.props.boxShadow,
-          margin: '1em 0'
-        }}/>
+        <Card empty={this.props.empty} passProps={{ ref: this.setRef }}
+          style={{
+            border: 'none',
+            width: this.props.cardWidth,
+            height: this.props.cardHeight,
+            boxShadow: this.props.boxShadow,
+            margin: '1em 0'
+          }}/>
       </div>
     )
   }
