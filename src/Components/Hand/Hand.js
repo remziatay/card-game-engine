@@ -5,7 +5,8 @@ import styles from './Hand.module.css'
 
 class Hand extends React.Component {
   state={
-    lastCard: null
+    lastCard: null,
+    lastSize: 0
   }
 
   setRef = ref => {
@@ -13,10 +14,16 @@ class Hand extends React.Component {
   }
 
   componentDidUpdate () {
-    if (!this.state.lastCard) return
+    if (this.props.cards.length < this.state.lastSize) {
+      return this.setState({
+        lastCard: null,
+        lastSize: this.props.cards.length
+      })
+    }
+    if (!this.state.lastCard || this.props.cards.length === this.state.lastSize) return
     const card = this.state.lastCard
     const rect = card.getBoundingClientRect()
-    const steps = [[991, 458], [600, 50]]
+    const steps = [[895, 458], [600, 50]]
     card.animate([
       {
         position: 'relative',
@@ -41,7 +48,10 @@ class Hand extends React.Component {
         bottom: '0px'
       }
     ], 3000)
-    this.setState({ lastCard: null })
+    this.setState({
+      lastCard: null,
+      lastSize: this.props.cards.length
+    })
   }
 
   calculateColumn = n => {
