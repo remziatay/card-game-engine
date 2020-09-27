@@ -7,8 +7,14 @@ class Card extends React.Component {
       <>
         <div className={`${styles.Card} ${this.props.empty ? styles.Empty : ''}`} style={this.props.style} {...this.props.passProps}>
           {this.props.info?.title}
+          {this.props.hasBackface &&
+            <div className={styles.Backface} style={{ boxShadow: this.props.style.boxShadow }}>
+            BACKFACE
+            </div>
+          }
         </div>
       </>
+
     )
   }
 }

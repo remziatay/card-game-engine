@@ -22,7 +22,7 @@ const initialState = {
   pickedCardRotation: originalRotation,
   pickedCardWidth: 120,
   fakeCardIndex: null,
-  cardShadowColor: 'aqua'
+  cardShadowColor: 'red'
 }
 
 const reducer = (state = initialState, action) => {

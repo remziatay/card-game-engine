@@ -1,10 +1,25 @@
 .Card {
+  position: relative;
   background: aqua;
   border: 2px solid black;
   color: black;
   user-select: none;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.75);
   transition: transform 0.05s ease;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.Card > .Backface {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  top: 0px;
+  left: 0px;
+  background: red;
+  transform: rotateY(180deg);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
 .Empty {

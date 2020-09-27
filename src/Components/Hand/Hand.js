@@ -23,13 +23,14 @@ class Hand extends React.Component {
     if (!this.state.lastCard || this.props.cards.length === this.state.lastSize) return
     const card = this.state.lastCard
     const rect = card.getBoundingClientRect()
-    const steps = [[895, 458], [600, 50]]
+    const steps = [[898, 458], [600, 50]]
     card.animate([
       {
         position: 'relative',
         left: steps[0][0] - rect.left + 'px',
         bottom: -(steps[0][1] - rect.top) + 'px',
-        transform: 'none',
+        transformOrigin: 'center',
+        transform: 'rotateY(180deg)',
         width: this.props.cardWidth + 'px',
         height: this.props.cardHeight + 'px'
       },
@@ -82,7 +83,8 @@ class Hand extends React.Component {
       const last = i === this.props.cards.length - 1
       if (this.props.pickedIndex >= 0 && i > this.props.pickedIndex) i--
       return (
-        <FocusableCard {...(last ? { setRef: this.setRef } : {})} key={card.key} info={card} focused={focused} picked={picked}
+        <FocusableCard {...(last ? { setRef: this.setRef, hasBackface: true } : {})}
+          key={card.key} info={card} focused={focused} picked={picked}
           focusedCardWidth={this.props.cardWidth * 2.5}
           focusedCardHeight={this.props.cardHeight * 2.5}
           style={{
@@ -90,7 +92,8 @@ class Hand extends React.Component {
             transform: this.calculateRotate(i),
             transformOrigin: this.calculateOrigin(i),
             width: this.props.cardWidth,
-            height: this.props.cardHeight
+            height: this.props.cardHeight,
+            zIndex: 3
           }}/>)
     })
 
