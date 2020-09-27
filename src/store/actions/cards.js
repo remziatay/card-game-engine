@@ -31,3 +31,7 @@ export const moveFakeCard = (index) => {
 export const putCard = () => {
   return { type: actionTypes.PUT_CARD }
 }
+
+export const setDeckPosition = (position) => {
+  return { type: actionTypes.SET_DECK_POSITION, position }
+}

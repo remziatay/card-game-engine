@@ -35,22 +35,29 @@ class FocusableCard extends React.Component {
     return (
       <>
         <Card info={this.props.info} passProps={passProps} hasBackface={this.props.hasBackface}
+          containerStyle={this.props.containerStyle}
           style={{
             ...this.props.style,
-            opacity: (this.props.focused || this.props.picked) ? 0 : 1,
+            opacity: this.props.focused ? 0 : 1,
             display: this.props.picked ? 'none' : ''
           }}/>
 
         {
-          this.props.focused && <Card info={this.props.info} style={{
-            position: 'absolute',
-            left: this.state.center - this.props.focusedCardWidth / 2,
-            bottom: '5%',
-            width: this.props.focusedCardWidth + 'px',
-            height: this.props.focusedCardHeight + 'px',
-            zIndex: 4,
-            pointerEvents: 'none'
-          }}/>
+          this.props.focused && <Card info={this.props.info}
+            containerStyle={{
+              ...this.props.containerStyle,
+              position: 'relative',
+              transform: 'none',
+              transformOrigin: 'center',
+              left: '-75%',
+              bottom: '225%',
+              pointerEvents: 'none',
+              zIndex: 4
+            }}
+            style={{
+              width: '250%',
+              height: '250%'
+            }}/>
         }
       </>
     )

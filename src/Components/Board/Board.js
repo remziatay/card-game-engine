@@ -61,22 +61,22 @@ class Board extends React.Component {
 
   render () {
     const fakeCard = this.props.fakeCard && (
-      <Card empty key='fakeCard' style={{
-        order: this.props.fakeCardOrder,
-        width: this.props.pickedCardWidth + 'px',
-        height: this.props.pickedCardHeight + 'px'
-      }}/>
+      <Card empty key='fakeCard' containerStyle={{ order: this.props.fakeCardOrder }}
+        style={{
+          width: this.props.pickedCardWidth + 'px',
+          height: this.props.pickedCardHeight + 'px'
+        }}/>
     )
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div ref={this.ref} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp}
         onMouseLeave={this.mouseLeave} className={styles.Board}>
         {this.props.board.map((card, i) => (
-          <Card key={card.key} info={card} style={{
-            width: this.props.pickedCardWidth + 'px',
-            height: this.props.pickedCardHeight + 'px',
-            order: 2 * i
-          }}/>
+          <Card key={card.key} info={card} containerStyle={{ order: 2 * i }}
+            style={{
+              width: this.props.pickedCardWidth + 'px',
+              height: this.props.pickedCardHeight + 'px'
+            }}/>
         ))}
         { fakeCard }
       </div>

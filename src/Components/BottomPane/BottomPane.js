@@ -9,10 +9,10 @@ class BottomPane extends React.Component {
       <>
         <div className={styles.BottomPane}>
           <div className={styles.Container}> MANA STUFF </div>
-          <div className={styles.Container} style={{ alignSelf: 'flex-end' }}>
+          <div className={styles.Container} style={{ alignSelf: 'flex-end', zIndex: 2 }}>
             <Hand/>
           </div>
-          <div className={styles.Container}>
+          <div className={styles.Container} >
             <Deck/>
           </div>
 

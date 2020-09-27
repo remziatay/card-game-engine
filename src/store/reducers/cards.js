@@ -22,7 +22,8 @@ const initialState = {
   pickedCardRotation: originalRotation,
   pickedCardWidth: 120,
   fakeCardIndex: null,
-  cardShadowColor: 'red'
+  cardShadowColor: 'red',
+  deckPosition: { x: 0, y: 0 }
 }
 
 const reducer = (state = initialState, action) => {
@@ -35,6 +36,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.RESET_ROTATION: return updateObject(state, { pickedCardRotation: originalRotation })
     case actionTypes.MOVE_FAKE_CARD: return updateObject(state, { fakeCardIndex: action.index })
     case actionTypes.PUT_CARD: return putCard(state)
+    case actionTypes.SET_DECK_POSITION: return updateObject(state, { deckPosition: action.position })
     default: return state
   }
 }

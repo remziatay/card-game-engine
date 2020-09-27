@@ -23,22 +23,29 @@ class Hand extends React.Component {
     if (!this.state.lastCard || this.props.cards.length === this.state.lastSize) return
     const card = this.state.lastCard
     const rect = card.getBoundingClientRect()
-    const steps = [[898, 458], [600, 50]]
-    card.animate([
+    card.parentNode.animate([
       {
         position: 'relative',
-        left: steps[0][0] - rect.left + 'px',
-        bottom: -(steps[0][1] - rect.top) + 'px',
-        transformOrigin: 'center',
-        transform: 'rotateY(180deg)',
+        left: this.props.deckPosition.x - rect.left + 'px',
+        bottom: -(this.props.deckPosition.y - rect.top) + 'px',
+        transform: 'none',
         width: this.props.cardWidth + 'px',
         height: this.props.cardHeight + 'px'
       },
       {
-        offset: 0.5,
+        offset: 0.25,
         position: 'relative',
-        left: steps[1][0] - rect.left + 'px',
-        bottom: -(steps[1][1] - rect.top) + 'px',
+        left: '-50%',
+        bottom: '105%',
+        transform: 'none',
+        width: 2.5 * this.props.cardWidth + 'px',
+        height: 2.5 * this.props.cardHeight + 'px'
+      },
+      {
+        offset: 0.90,
+        position: 'relative',
+        left: '-50%',
+        bottom: '105%',
         transform: 'none',
         width: 2.5 * this.props.cardWidth + 'px',
         height: 2.5 * this.props.cardHeight + 'px'
@@ -48,7 +55,41 @@ class Hand extends React.Component {
         left: '0px',
         bottom: '0px'
       }
-    ], 3000)
+    ], 2500)
+    card.animate([
+      {
+        transformOrigin: 'center',
+        transform: 'rotateX(0deg)  rotateY(180deg)',
+        width: this.props.cardWidth + 'px',
+        height: this.props.cardHeight + 'px'
+      },
+      {
+        transform: 'rotateX(45deg)  rotateY(225deg)'
+      },
+      {
+        transform: 'rotateX(90deg) rotateY(270deg)'
+      },
+      {
+        offset: 0.25,
+        transform: 'rotateX(0deg)  rotateY(360deg)',
+        width: 2.5 * this.props.cardWidth + 'px',
+        height: 2.5 * this.props.cardHeight + 'px'
+      },
+      {
+        transformOrigin: 'center',
+        offset: 0.90,
+        transform: 'rotateX(0deg)  rotateY(360deg)',
+        width: 2.5 * this.props.cardWidth + 'px',
+        height: 2.5 * this.props.cardHeight + 'px'
+      },
+      {
+        transform: 'rotateX(0deg)  rotateY(360deg)',
+        width: this.props.cardWidth + 'px',
+        height: this.props.cardHeight + 'px'
+      }
+    ], 2500)
+    // .finished.then(() => console.log('anim'))
+
     this.setState({
       lastCard: null,
       lastSize: this.props.cards.length
@@ -87,13 +128,19 @@ class Hand extends React.Component {
           key={card.key} info={card} focused={focused} picked={picked}
           focusedCardWidth={this.props.cardWidth * 2.5}
           focusedCardHeight={this.props.cardHeight * 2.5}
-          style={{
+          containerStyle={{
             gridColumn: this.calculateColumn(i),
             transform: this.calculateRotate(i),
             transformOrigin: this.calculateOrigin(i),
             width: this.props.cardWidth,
             height: this.props.cardHeight,
-            zIndex: 3
+            zIndex: 3,
+            perspective: '500px'
+          }}
+          style={{
+            width: this.props.cardWidth,
+            height: this.props.cardHeight,
+            border: '2px solid black'
           }}/>)
     })
 
@@ -130,7 +177,8 @@ const mapStateToProps = state => {
     focusedCard: state.cards.focusedCard,
     cardWidth: state.cards.cardWidth,
     cardHeight: state.cards.cardWidth * state.cards.cardRatio,
-    widthRate: 1 + (cardCount - 1) * cardOverflow / state.cards.cardGrid
+    widthRate: 1 + (cardCount - 1) * cardOverflow / state.cards.cardGrid,
+    deckPosition: state.cards.deckPosition
   }
 }
 

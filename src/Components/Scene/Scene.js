@@ -36,22 +36,17 @@ class Scene extends React.Component {
         </div>
 
         {this.props.pickedCard &&
-          <div style={{
-            position: 'fixed',
-            left: this.props.pickedCardPosition.x,
-            top: this.props.pickedCardPosition.y,
-            border: 'none',
-            perspective: '500px',
-            pointerEvents: 'none',
-            width: this.props.pickedCardWidth,
-            height: this.props.pickedCardHeight
-          }}>
-            <Card info={this.props.pickedCard} style={{
+            <Card info={this.props.pickedCard} containerStyle={{
+              position: 'fixed',
+              left: this.props.pickedCardPosition.x,
+              top: this.props.pickedCardPosition.y,
+              pointerEvents: 'none'
+            }}
+            style={{
               width: this.props.pickedCardWidth,
               height: this.props.pickedCardHeight,
               transform: this.props.pickedCardRotation
             }}/>
-          </div>
         }
       </>
     )
