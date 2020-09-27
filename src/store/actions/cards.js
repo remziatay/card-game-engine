@@ -35,3 +35,7 @@ export const putCard = () => {
 export const setDeckPosition = (position) => {
   return { type: actionTypes.SET_DECK_POSITION, position }
 }
+
+export const resizeWindow = (width, height) => {
+  return { type: actionTypes.WINDOW_RESIZE, width, height }
+}

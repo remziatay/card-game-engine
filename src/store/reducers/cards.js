@@ -9,18 +9,23 @@ const initialDeck = Array(30).fill().map((_, i) => ({
 
 const originalRotation = { x: 15, y: 0 }
 
+const cardRatio = 1.5
+const cardWidth = window.innerHeight * 0.25 / cardRatio
+const pickedRatio = 1.2
+
 const initialState = {
   deck: initialDeck,
   hand: [],
   board: [],
   cardGrid: 6,
-  cardWidth: 100,
-  cardRatio: 1.5,
+  cardWidth,
+  cardRatio,
   focusedCard: null,
   pickedCard: null,
   pickedCardPosition: null,
   pickedCardRotation: originalRotation,
-  pickedCardWidth: 120,
+  pickedRatio,
+  pickedCardWidth: cardWidth * pickedRatio,
   fakeCardIndex: null,
   cardShadowColor: 'red',
   deckPosition: { x: 0, y: 0 }
@@ -37,8 +42,17 @@ const reducer = (state = initialState, action) => {
     case actionTypes.MOVE_FAKE_CARD: return updateObject(state, { fakeCardIndex: action.index })
     case actionTypes.PUT_CARD: return putCard(state)
     case actionTypes.SET_DECK_POSITION: return updateObject(state, { deckPosition: action.position })
+    case actionTypes.WINDOW_RESIZE: return windowResize(state, action.width, action.height)
     default: return state
   }
+}
+
+function windowResize (state, width, height) {
+  const cardWidth = height * 0.25 / state.cardRatio
+  return updateObject(state, {
+    cardWidth,
+    pickedCardWidth: cardWidth * state.pickedRatio
+  })
 }
 
 function drawRandomCard (state) {
