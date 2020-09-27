@@ -28,12 +28,11 @@ class Deck extends React.Component {
     return (
       <div>
         <Card hasBackface passProps={{ ref: this.setRef }}
-          containerStyle={{ margin: '1em 0' }}
+          containerStyle={{ margin: '1em 0', boxShadow: this.props.boxShadow }}
           style={{
             border: 'none',
             width: this.props.cardWidth,
             height: this.props.cardHeight,
-            boxShadow: this.props.boxShadow,
             transform: 'rotateY(180deg)'
           }}/>
       </div>
