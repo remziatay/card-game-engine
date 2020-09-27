@@ -7,7 +7,6 @@
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.75);
   transition: transform 0.05s ease;
   transform-style: preserve-3d;
-  backface-visibility: hidden;
 }
 
 .Card > .Backface {

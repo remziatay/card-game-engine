@@ -6,6 +6,7 @@
   height: 100vh;
   background: #f7cac9;
   overflow: hidden;
+  user-select: none;
 }
 
 .Scene > * {
