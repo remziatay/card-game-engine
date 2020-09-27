@@ -53,6 +53,12 @@ class Board extends React.Component {
     this.orderFakeCard(evt)
   }
 
+  mouseLeave = () => {
+    if (!this.state.columns.length || !this.props.pickedCard || this.props.board.length === 5) return
+    this.orderFakeCard.cancel()
+    this.props.moveFakeCard(null)
+  }
+
   render () {
     const fakeCard = this.props.fakeCard && (
       <Card empty key='fakeCard' style={{
@@ -63,7 +69,8 @@ class Board extends React.Component {
     )
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div ref={this.ref} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} className={styles.Board}>
+      <div ref={this.ref} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp}
+        onMouseLeave={this.mouseLeave} className={styles.Board}>
         {this.props.board.map((card, i) => (
           <Card key={card.key} info={card} style={{
             width: this.props.pickedCardWidth + 'px',
