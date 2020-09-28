@@ -40,7 +40,8 @@ class Scene extends React.Component {
               position: 'fixed',
               left: this.props.pickedCardPosition.x,
               top: this.props.pickedCardPosition.y,
-              pointerEvents: 'none'
+              pointerEvents: 'none',
+              zIndex: 10
             }}
             style={{
               width: this.props.pickedCardWidth,

@@ -10,7 +10,8 @@ const initialDeck = Array(30).fill().map((_, i) => ({
 const originalRotation = { x: 15, y: 0 }
 
 const cardRatio = 1.5
-const cardWidth = window.innerHeight * 0.25 / cardRatio
+const windowCardRatio = 0.20
+const cardWidth = window.innerHeight * windowCardRatio / cardRatio
 const pickedRatio = 1.2
 
 const initialState = {
@@ -27,7 +28,7 @@ const initialState = {
   pickedRatio,
   pickedCardWidth: cardWidth * pickedRatio,
   fakeCardIndex: null,
-  cardShadowColor: 'red',
+  cardShadowColor: 'white',
   deckPosition: { x: 0, y: 0 }
 }
 
@@ -48,7 +49,7 @@ const reducer = (state = initialState, action) => {
 }
 
 function windowResize (state, width, height) {
-  const cardWidth = height * 0.25 / state.cardRatio
+  const cardWidth = height * windowCardRatio / state.cardRatio
   return updateObject(state, {
     cardWidth,
     pickedCardWidth: cardWidth * state.pickedRatio

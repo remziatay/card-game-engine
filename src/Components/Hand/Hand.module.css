@@ -2,7 +2,6 @@
   display: grid;
   margin-bottom: -5%;
   transition: width 0.25s;
-  align-self: flex-end;
 }
 
 .Hand > * {

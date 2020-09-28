@@ -28,7 +28,7 @@ class Deck extends React.Component {
     return (
       <div>
         <Card hasBackface passProps={{ ref: this.setRef }}
-          containerStyle={{ margin: '1em 0', boxShadow: this.props.boxShadow }}
+          containerStyle={{ marginBottom: '0.6em', boxShadow: this.props.boxShadow }}
           style={{
             border: 'none',
             width: this.props.cardWidth,

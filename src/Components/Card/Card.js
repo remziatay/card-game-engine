@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './Card.module.css'
+import texture from './card-texture.jpg'
 
 class Card extends React.Component {
   render () {
@@ -8,8 +9,11 @@ class Card extends React.Component {
         <div className={`${styles.Card} ${this.props.empty ? styles.Empty : ''}`} style={this.props.style} {...this.props.passProps}>
           {this.props.info?.title}
           {this.props.hasBackface &&
-            <div className={styles.Backface} >
-            BACKFACE
+            <div className={styles.Backface} style={{
+              background: `url(${texture})`,
+              backgroundSize: 'cover',
+              backgroundRepeat: 'repeat'
+            }}>
             </div>
           }
         </div>

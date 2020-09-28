@@ -1,9 +1,8 @@
 .BottomPane {
   display: grid;
   grid-template-columns: 1fr 5fr 1fr;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-around;
-  border: 2px solid yellow;
 }
 
 .Container {
