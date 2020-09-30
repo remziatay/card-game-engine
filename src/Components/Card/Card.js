@@ -9,7 +9,7 @@ class Card extends React.Component {
         <div className={`${styles.Card} ${this.props.noContent ? styles.Empty : ''}`} style={this.props.style} {...this.props.passProps}>
           { this.props.noContent ||
           <>
-            <div className={styles.Egg}></div>
+            <div className={styles.Egg} style={{ background: this.props.info.background }}></div>
             <div className={styles.Text}>{this.props.info?.title}</div>
             <div className={styles.Float + ' ' + styles.Ball}>6</div>
             <div className={styles.Float + ' ' + styles.Ball2}>8</div>

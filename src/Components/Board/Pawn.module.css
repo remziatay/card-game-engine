@@ -1,0 +1,35 @@
+.Egg {
+  border: 3px solid brown;
+  border-radius: 100%;
+  width: 13em;
+  height: 17.5em;
+  position: relative;
+}
+
+.Float {
+  font-size: 3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  border: 1px solid black;
+  border-radius: 100%;
+  width: 1em;
+  height: 1em;
+}
+
+.Ball {
+  background: yellow;
+  left: 0;
+  bottom: 0;
+  margin-left: 0.18em;
+  margin-bottom: 0.18em;
+}
+
+.Ball2 {
+  background: yellow;
+  right: 0;
+  bottom: 0;
+  margin-right: 0.18em;
+  margin-bottom: 0.18em;
+}

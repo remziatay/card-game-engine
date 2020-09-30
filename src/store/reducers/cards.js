@@ -4,7 +4,13 @@ import { updateObject } from '../utility'
 
 const initialDeck = Array(30).fill().map((_, i) => ({
   key: i,
-  title: `${i}. card`
+  title: `${i}. card`,
+  background: `rgb(${[0, 0, 0].map(_ => Math.random() * 256 | 0)})`
+}))
+
+const initialOpponentBoard = Array(3).fill().map((_, i) => ({
+  key: i,
+  background: `rgb(${[0, 0, 0].map(_ => Math.random() * 256 | 0)})`
 }))
 
 const originalRotation = { x: 15, y: 0 }
@@ -18,6 +24,7 @@ const initialState = {
   deck: initialDeck,
   hand: [],
   board: [],
+  opponentBoard: initialOpponentBoard,
   cardGrid: 6,
   cardWidth,
   cardRatio,
@@ -30,9 +37,9 @@ const initialState = {
   fakeCardIndex: null,
   cardShadowColor: 'white',
   deckPosition: { x: 0, y: 0 },
-  handSize: '.35em',
+  handSize: '.3em',
   focusSize: '1em',
-  pickSize: '.45em'
+  pickSize: '.4em'
 }
 
 const reducer = (state = initialState, action) => {
