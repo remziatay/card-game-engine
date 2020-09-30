@@ -11,6 +11,7 @@ class Board extends React.Component {
   }
 
   ref = React.createRef()
+  opRef = React.createRef()
 
   setColumns = cumulativeRafSchd(() => {
     const columns = Array.from(this.ref.current.children).map(card => {
@@ -34,8 +35,8 @@ class Board extends React.Component {
   }
 
   mouseUp = evt => {
-    evt.stopPropagation()
     if (this.props.pickedCard) {
+      evt.stopPropagation()
       this.orderFakeCard.cancel()
       this.props.putCard()
     }
@@ -59,31 +60,60 @@ class Board extends React.Component {
     this.props.moveFakeCard(null)
   }
 
+  attack = op => {
+    const pawn = this.ref.current.children[this.props.board.findIndex(card => card.key === this.props.pickedPawn.key)]
+    const opponent = this.opRef.current.children[this.props.opponentBoard.findIndex(card => card.key === op.key)]
+    pawn.style.transform = 'none'
+    const rect = pawn.getBoundingClientRect()
+    const opRect = opponent.getBoundingClientRect()
+    const angle = Math.atan2(opRect.left - rect.left, rect.top - opRect.top)
+    const distance = Math.hypot(opRect.top + opRect.height / 2 - rect.top, opRect.left - rect.left)
+    pawn.animate([
+      {
+        transform: 'none',
+        zIndex: 10
+      },
+      {
+        offset: 0.5,
+        transform: `rotate(${angle}rad) translateY(${distance * 0.2}px)`
+      },
+      {
+        offset: Math.min(0.75, 0.5 + distance / 8000),
+        transform: `rotate(${angle}rad) translateY(${-distance}px)`
+      },
+      {
+        offset: Math.min(1, 0.5 + 6 * distance / 8000),
+        transform: `rotate(${angle}rad) translateY(0px)`,
+        zIndex: 10
+      }
+    ], 800)
+  }
+
   render () {
-    const fakeCard = this.props.fakeCard && (
+    const fakePawn = this.props.fakeCard && (
       <Pawn noContent style={{
         order: this.props.fakeCardOrder,
         fontSize: this.props.cardSize
-      }}
-      />
+      }}/>
     )
+
     return (
       <div className={styles.Board}>
-        <div className={styles.Line} style={{ borderBottom: '3px dotted gray' }}>
-          {this.props.opponentBoard.map((card, _) => (
-            <Pawn key={card.key} info={card} style={{ fontSize: this.props.cardSize }}/>
-          ))}
+        <div ref={this.opRef} className={styles.Line} style={{ borderBottom: '3px dotted gray' }}>
+          {this.props.opponentBoard.map(card =>
+            <Pawn opponent attack={this.attack} key={card.key} info={card}
+              style={{ fontSize: this.props.cardSize }}/>)}
         </div>
         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
         <div ref={this.ref} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp}
           onMouseLeave={this.mouseLeave} className={styles.Line}>
           {this.props.board.map((card, i) => (
-            <Pawn key={card.key} info={card} style={{
+            <Pawn key={card.key} info={card} picked={this.props.pickedPawn?.key === card.key} style={{
               order: 2 * i,
               fontSize: this.props.cardSize
             }}/>
           ))}
-          { fakeCard }
+          { fakePawn }
         </div>
       </div>
     )
@@ -98,7 +128,8 @@ const mapStateToProps = state => ({
   pickedCardHeight: state.cards.pickedCardWidth * state.cards.cardRatio,
   fakeCard: state.cards.fakeCardIndex !== null,
   fakeCardOrder: 2 * state.cards.fakeCardIndex - 1,
-  cardSize: state.cards.pickSize
+  cardSize: state.cards.pickSize,
+  pickedPawn: state.cards.pickedPawn
 })
 
 const mapDispatchToProps = dispatch => ({

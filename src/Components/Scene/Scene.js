@@ -18,9 +18,8 @@ class Scene extends React.Component {
   }
 
   mouseUp = () => {
-    if (this.props.pickedCard) {
-      this.props.unpickCard()
-    }
+    if (this.props.pickedCard) this.props.unpickCard()
+    else if (this.props.pickedPawn) this.props.unpickPawn()
   }
 
   render () {
@@ -60,14 +59,16 @@ const mapStateToProps = state => ({
   pickedCardHeight: state.cards.pickedCardWidth * state.cards.cardRatio,
   pickedCardPosition: state.cards.pickedCardPosition,
   pickedCardRotation: `rotateX(${state.cards.pickedCardRotation.x}deg) rotateY(${state.cards.pickedCardRotation.y}deg)`,
-  pickedSize: state.cards.pickSize
+  pickedSize: state.cards.pickSize,
+  pickedPawn: state.cards.pickedPawn
 })
 
 const mapDispatchToProps = dispatch => ({
   drawCard: () => dispatch(actionCreators.drawCard()),
   unpickCard: () => dispatch(actionCreators.unpickCard()),
   moveCard: cumulativeRafSchd((x, y) => dispatch(actionCreators.moveCard(x, y))),
-  resetRotation: debounce(() => { dispatch(actionCreators.resetRotation()) }, 120)
+  resetRotation: debounce(() => { dispatch(actionCreators.resetRotation()) }, 120),
+  unpickPawn: () => dispatch(actionCreators.pickPawn(null))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Scene)

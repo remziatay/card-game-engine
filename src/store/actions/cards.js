@@ -36,6 +36,10 @@ export const setDeckPosition = (position) => {
   return { type: actionTypes.SET_DECK_POSITION, position }
 }
 
+export const pickPawn = (pawn) => {
+  return { type: actionTypes.PICK_PAWN, pawn }
+}
+
 export const resizeWindow = (width, height) => {
   return { type: actionTypes.WINDOW_RESIZE, width, height }
 }

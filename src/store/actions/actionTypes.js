@@ -7,4 +7,6 @@ export const RESET_ROTATION = 'RESET_ROTATION'
 export const MOVE_FAKE_CARD = 'MOVE_FAKE_CARD'
 export const PUT_CARD = 'PUT_CARD'
 export const SET_DECK_POSITION = 'SET_DECK_POSITION'
+export const PICK_PAWN = 'PICK_PAWN'
+
 export const WINDOW_RESIZE = 'WINDOW_RESIZE'
