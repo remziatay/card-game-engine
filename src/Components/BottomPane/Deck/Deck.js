@@ -27,12 +27,15 @@ class Deck extends React.Component {
   render () {
     return (
       <div>
-        <Card hasBackface passProps={{ ref: this.setRef }}
-          containerStyle={{ marginBottom: '0.6em', boxShadow: this.props.boxShadow }}
+        <Card hasBackface noContent passProps={{ ref: this.setRef }}
+          containerStyle={{
+            marginBottom: '0.7rem',
+            boxShadow: this.props.boxShadow,
+            fontSize: this.props.size,
+            paddingTop: 0
+          }}
           style={{
             border: 'none',
-            width: this.props.cardWidth,
-            height: this.props.cardHeight,
             transform: 'rotateY(180deg)'
           }}/>
       </div>
@@ -53,7 +56,8 @@ const mapStateToProps = state => ({
   cardWidth: state.cards.cardWidth,
   cardHeight: state.cards.cardWidth * state.cards.cardRatio,
   empty: state.cards.deck.length === 0,
-  boxShadow: createBoxShadow(state.cards.cardShadowColor, state.cards.deck.length)
+  boxShadow: createBoxShadow(state.cards.cardShadowColor, state.cards.deck.length),
+  size: state.cards.handSize
 })
 
 const mapDispatchToProps = dispatch => ({

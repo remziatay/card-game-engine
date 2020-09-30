@@ -37,15 +37,15 @@ class Scene extends React.Component {
 
         {this.props.pickedCard &&
             <Card info={this.props.pickedCard} containerStyle={{
+              fontSize: this.props.pickedSize,
               position: 'fixed',
               left: this.props.pickedCardPosition.x,
               top: this.props.pickedCardPosition.y,
               pointerEvents: 'none',
-              zIndex: 10
+              zIndex: 10,
+              perspective: '500px'
             }}
             style={{
-              width: this.props.pickedCardWidth,
-              height: this.props.pickedCardHeight,
               transform: this.props.pickedCardRotation
             }}/>
         }
@@ -59,7 +59,8 @@ const mapStateToProps = state => ({
   pickedCardWidth: state.cards.pickedCardWidth,
   pickedCardHeight: state.cards.pickedCardWidth * state.cards.cardRatio,
   pickedCardPosition: state.cards.pickedCardPosition,
-  pickedCardRotation: `rotateX(${state.cards.pickedCardRotation.x}deg) rotateY(${state.cards.pickedCardRotation.y}deg)`
+  pickedCardRotation: `rotateX(${state.cards.pickedCardRotation.x}deg) rotateY(${state.cards.pickedCardRotation.y}deg)`,
+  pickedSize: state.cards.pickSize
 })
 
 const mapDispatchToProps = dispatch => ({

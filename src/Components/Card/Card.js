@@ -5,9 +5,17 @@ import texture from './card-texture.jpg'
 class Card extends React.Component {
   render () {
     return (
-      <div style={this.props.containerStyle}>
-        <div className={`${styles.Card} ${this.props.empty ? styles.Empty : ''}`} style={this.props.style} {...this.props.passProps}>
-          {this.props.info?.title}
+      <div className={styles.Container} style={this.props.containerStyle}>
+        <div className={`${styles.Card} ${this.props.noContent ? styles.Empty : ''}`} style={this.props.style} {...this.props.passProps}>
+          { this.props.noContent ||
+          <>
+            <div className={styles.Egg}></div>
+            <div className={styles.Text}>{this.props.info?.title}</div>
+            <div className={styles.Float + ' ' + styles.Ball}>6</div>
+            <div className={styles.Float + ' ' + styles.Ball2}>8</div>
+            <div className={styles.Float + ' ' + styles.Mana}>5</div>
+          </>
+          }
           {this.props.hasBackface &&
             <div className={styles.Backface} style={{
               background: `url(${texture})`,

@@ -61,22 +61,21 @@ class Board extends React.Component {
 
   render () {
     const fakeCard = this.props.fakeCard && (
-      <Card empty key='fakeCard' containerStyle={{ order: this.props.fakeCardOrder }}
-        style={{
-          width: this.props.pickedCardWidth + 'px',
-          height: this.props.pickedCardHeight + 'px'
-        }}/>
+      <Card noContent key='fakeCard' containerStyle={{
+        order: this.props.fakeCardOrder,
+        fontSize: this.props.cardSize
+      }}
+      />
     )
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div ref={this.ref} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp}
         onMouseLeave={this.mouseLeave} className={styles.Board}>
         {this.props.board.map((card, i) => (
-          <Card key={card.key} info={card} containerStyle={{ order: 2 * i }}
-            style={{
-              width: this.props.pickedCardWidth + 'px',
-              height: this.props.pickedCardHeight + 'px'
-            }}/>
+          <Card key={card.key} info={card} containerStyle={{
+            order: 2 * i,
+            fontSize: this.props.cardSize
+          }}/>
         ))}
         { fakeCard }
       </div>
@@ -90,7 +89,8 @@ const mapStateToProps = state => ({
   pickedCardWidth: state.cards.pickedCardWidth,
   pickedCardHeight: state.cards.pickedCardWidth * state.cards.cardRatio,
   fakeCard: state.cards.fakeCardIndex !== null,
-  fakeCardOrder: 2 * state.cards.fakeCardIndex - 1
+  fakeCardOrder: 2 * state.cards.fakeCardIndex - 1,
+  cardSize: state.cards.pickSize
 })
 
 const mapDispatchToProps = dispatch => ({

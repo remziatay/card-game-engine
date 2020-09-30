@@ -29,7 +29,10 @@ const initialState = {
   pickedCardWidth: cardWidth * pickedRatio,
   fakeCardIndex: null,
   cardShadowColor: 'white',
-  deckPosition: { x: 0, y: 0 }
+  deckPosition: { x: 0, y: 0 },
+  handSize: '.35em',
+  focusSize: '1em',
+  pickSize: '.45em'
 }
 
 const reducer = (state = initialState, action) => {

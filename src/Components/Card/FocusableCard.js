@@ -8,10 +8,10 @@ class FocusableCard extends React.Component {
     center: 0
   }
 
-  focus = evt => {
+  focus = () => {
     if (this.props.pickedCard) return
     this.props.focusCard(this.props.info)
-    this.setState({ center: evt.pageX })
+    // this.setState({ center: evt.pageX })
   }
 
   unfocus = () => {
@@ -35,29 +35,28 @@ class FocusableCard extends React.Component {
     return (
       <>
         <Card info={this.props.info} passProps={passProps} hasBackface={this.props.hasBackface}
-          containerStyle={this.props.containerStyle}
-          style={{
-            ...this.props.style,
-            opacity: this.props.focused ? 0 : 1,
-            display: this.props.picked ? 'none' : ''
-          }}/>
+          containerStyle={{ ...this.props.containerStyle, display: this.props.picked ? 'none' : '' }}
+          style={{ ...this.props.style, opacity: this.props.focused ? 0 : 1 }}/>
 
-        {
-          this.props.focused && <Card info={this.props.info}
+        {this.props.focused &&
+        <>
+          <Card noContent
+            containerStyle={{ ...this.props.containerStyle, pointerEvents: 'none' }}
+            style={this.props.style}/>
+
+          <Card info={this.props.info}
             containerStyle={{
               ...this.props.containerStyle,
-              position: 'relative',
+              fontSize: this.props.focusedSize,
+              position: 'absolute',
               transform: 'none',
               transformOrigin: 'center',
-              left: '-75%',
-              bottom: '225%',
+              left: '-50%',
+              bottom: '90%',
               pointerEvents: 'none',
               zIndex: 4
-            }}
-            style={{
-              width: '250%',
-              height: '250%'
             }}/>
+        </>
         }
       </>
     )
@@ -65,7 +64,8 @@ class FocusableCard extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  pickedCard: state.cards.pickedCard
+  pickedCard: state.cards.pickedCard,
+  focusedSize: state.cards.focusSize
 })
 
 const mapDispatchToProps = dispatch => ({

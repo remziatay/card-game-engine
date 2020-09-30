@@ -1,3 +1,7 @@
+.Container {
+  padding-top: 2.5em;
+}
+
 .Card {
   position: relative;
   background: aqua;
@@ -7,6 +11,11 @@
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.75);
   transition: transform 0.05s ease;
   transform-style: preserve-3d;
+  width: 17.25em;
+  height: 25em;
+  border-radius: 0.5em;
+  display: flex;
+  flex-flow: column-reverse;
 }
 
 .Card > .Backface {
@@ -22,4 +31,61 @@
 
 .Empty {
   background: none;
+}
+
+.Egg {
+  order: 2;
+  border: 3px solid brown;
+  border-radius: 100%;
+  width: 75%;
+  margin: auto;
+  flex: 0 0 70%;
+  background: aqua;
+}
+
+.Text {
+  flex: 0 0 40%;
+  border: 2px solid black;
+  word-wrap: break-word;
+  overflow-y: hidden;
+  margin: 0.1em 0.5em 0.5em 0.5em;
+  padding: 0.5em;
+}
+
+.Float {
+  font-size: 3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  border: 1px solid black;
+  border-radius: 100%;
+  width: 1em;
+  height: 1em;
+}
+
+.Ball {
+  background: yellow;
+  left: 0;
+  bottom: 0;
+  margin-left: -0.18em;
+  margin-bottom: -0.18em;
+}
+
+.Ball2 {
+  background: yellow;
+  right: 0;
+  bottom: 0;
+  margin-right: -0.18em;
+  margin-bottom: -0.18em;
+}
+
+.Mana {
+  color: white;
+  background: navy;
+  padding: 0.5em;
+  left: 0;
+  top: 0;
+  margin-left: -0.25em;
+  margin-top: -0.25em;
 }

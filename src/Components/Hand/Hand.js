@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import Card from '../Card/Card'
 import FocusableCard from '../Card/FocusableCard'
 import styles from './Hand.module.css'
 
@@ -25,71 +26,48 @@ class Hand extends React.Component {
     const rect = card.getBoundingClientRect()
     card.parentNode.animate([
       {
-        position: 'relative',
+        position: 'absolute',
         left: this.props.deckPosition.x - rect.left + 'px',
         bottom: -(this.props.deckPosition.y - rect.top) + 'px',
         transform: 'none',
-        width: this.props.cardWidth + 'px',
-        height: this.props.cardHeight + 'px'
+        fontSize: this.props.size
       },
       {
         offset: 0.25,
-        position: 'relative',
         left: '-50%',
         bottom: '105%',
         transform: 'none',
-        width: 2.5 * this.props.cardWidth + 'px',
-        height: 2.5 * this.props.cardHeight + 'px'
+        fontSize: `calc(2.5 * ${this.props.size})` // TODO THIS CAN BE FIXED ON STORE
       },
       {
         offset: 0.90,
-        position: 'relative',
         left: '-50%',
         bottom: '105%',
         transform: 'none',
-        width: 2.5 * this.props.cardWidth + 'px',
-        height: 2.5 * this.props.cardHeight + 'px'
+        fontSize: `calc(2.5 * ${this.props.size})`
       },
       {
-        position: 'relative',
+        position: 'absolute',
         left: '0px',
         bottom: '0px'
       }
     ], 2500)
+
     card.animate([
-      {
-        transformOrigin: 'center',
-        transform: 'rotateX(0deg)  rotateY(180deg)',
-        width: this.props.cardWidth + 'px',
-        height: this.props.cardHeight + 'px'
-      },
-      {
-        transform: 'rotateX(45deg)  rotateY(225deg)'
-      },
-      {
-        transform: 'rotateX(90deg) rotateY(270deg)'
-      },
+      { transform: 'rotateX(0deg)  rotateY(180deg)' },
+      { transform: 'rotateX(45deg)  rotateY(225deg)' },
+      { transform: 'rotateX(90deg) rotateY(270deg)' },
       {
         offset: 0.25,
-        transform: 'rotateX(0deg)  rotateY(360deg)',
-        width: 2.5 * this.props.cardWidth + 'px',
-        height: 2.5 * this.props.cardHeight + 'px'
+        transform: 'rotateX(0deg)  rotateY(360deg)'
       },
       {
-        transformOrigin: 'center',
         offset: 0.90,
-        transform: 'rotateX(0deg)  rotateY(360deg)',
-        width: 2.5 * this.props.cardWidth + 'px',
-        height: 2.5 * this.props.cardHeight + 'px'
+        transform: 'rotateX(0deg)  rotateY(360deg)'
       },
-      {
-        transform: 'rotateX(0deg)  rotateY(360deg)',
-        width: this.props.cardWidth + 'px',
-        height: this.props.cardHeight + 'px'
-      }
+      { transform: 'rotateX(0deg)  rotateY(360deg)' }
     ], 2500)
-    // .finished.then(() => console.log('anim'))
-
+    // .finished.then(() => console.log('anim')) NO, USE ONFINISH
     this.setState({
       lastCard: null,
       lastSize: this.props.cards.length
@@ -126,29 +104,29 @@ class Hand extends React.Component {
       return (
         <FocusableCard {...(last ? { setRef: this.setRef, hasBackface: true } : {})}
           key={card.key} info={card} focused={focused} picked={picked}
-          focusedCardWidth={this.props.cardWidth * 2.5}
-          focusedCardHeight={this.props.cardHeight * 2.5}
           containerStyle={{
+            fontSize: this.props.size,
             gridColumn: this.calculateColumn(i),
             transform: this.calculateRotate(i),
             transformOrigin: this.calculateOrigin(i),
-            width: this.props.cardWidth,
-            height: this.props.cardHeight,
             zIndex: 3,
-            perspective: '500px'
+            perspective: '500px',
+            marginBottom: '-30%'
           }}
           style={{
-            width: this.props.cardWidth,
-            height: this.props.cardHeight,
             border: '2px solid black'
           }}/>)
     })
 
     return (
-      <div className={styles.Hand} style={{
-        width: `${this.props.cardWidth * this.props.widthRate}px`,
-        height: `${this.props.cardHeight}px`
-      }}>
+      <div className={styles.Hand} style={{ gridTemplateColumns: `repeat(${this.props.columnCount}, 1fr)` }}>
+        {/* To keep container height even when it's empty */}
+        <Card noContent containerStyle={{
+          fontSize: this.props.size,
+          gridColumn: this.calculateColumn(0),
+          opacity: 0,
+          marginBottom: '-30%'
+        }}/>
         {filteredHand}
       </div>
     )
@@ -177,8 +155,9 @@ const mapStateToProps = state => {
     focusedCard: state.cards.focusedCard,
     cardWidth: state.cards.cardWidth,
     cardHeight: state.cards.cardWidth * state.cards.cardRatio,
-    widthRate: 1 + (cardCount - 1) * cardOverflow / state.cards.cardGrid,
-    deckPosition: state.cards.deckPosition
+    columnCount: state.cards.cardGrid + (cardCount - 1) * cardOverflow,
+    deckPosition: state.cards.deckPosition,
+    size: state.cards.handSize
   }
 }
 
