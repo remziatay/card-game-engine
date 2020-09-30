@@ -1,22 +1,24 @@
 {
   "files": {
-    "main.css": "/card-game-engine/static/css/main.f96efd8e.chunk.css",
-    "main.js": "/card-game-engine/static/js/main.ce3d753f.chunk.js",
-    "main.js.map": "/card-game-engine/static/js/main.ce3d753f.chunk.js.map",
+    "main.css": "/card-game-engine/static/css/main.cd35727d.chunk.css",
+    "main.js": "/card-game-engine/static/js/main.73573bb6.chunk.js",
+    "main.js.map": "/card-game-engine/static/js/main.73573bb6.chunk.js.map",
     "runtime-main.js": "/card-game-engine/static/js/runtime-main.f76411d4.js",
     "runtime-main.js.map": "/card-game-engine/static/js/runtime-main.f76411d4.js.map",
-    "static/js/2.97f0201e.chunk.js": "/card-game-engine/static/js/2.97f0201e.chunk.js",
-    "static/js/2.97f0201e.chunk.js.map": "/card-game-engine/static/js/2.97f0201e.chunk.js.map",
+    "static/js/2.18206339.chunk.js": "/card-game-engine/static/js/2.18206339.chunk.js",
+    "static/js/2.18206339.chunk.js.map": "/card-game-engine/static/js/2.18206339.chunk.js.map",
     "index.html": "/card-game-engine/index.html",
-    "precache-manifest.f9923a8d3d4c385b8202c21115c2877b.js": "/card-game-engine/precache-manifest.f9923a8d3d4c385b8202c21115c2877b.js",
+    "precache-manifest.da89948a92610db230bf28032b848e65.js": "/card-game-engine/precache-manifest.da89948a92610db230bf28032b848e65.js",
     "service-worker.js": "/card-game-engine/service-worker.js",
-    "static/css/main.f96efd8e.chunk.css.map": "/card-game-engine/static/css/main.f96efd8e.chunk.css.map",
-    "static/js/2.97f0201e.chunk.js.LICENSE.txt": "/card-game-engine/static/js/2.97f0201e.chunk.js.LICENSE.txt"
+    "static/css/main.cd35727d.chunk.css.map": "/card-game-engine/static/css/main.cd35727d.chunk.css.map",
+    "static/js/2.18206339.chunk.js.LICENSE.txt": "/card-game-engine/static/js/2.18206339.chunk.js.LICENSE.txt",
+    "static/media/card-texture.jpg": "/card-game-engine/static/media/card-texture.15ee4520.jpg",
+    "static/media/test.svg": "/card-game-engine/static/media/test.24636254.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.f76411d4.js",
-    "static/js/2.97f0201e.chunk.js",
-    "static/css/main.f96efd8e.chunk.css",
-    "static/js/main.ce3d753f.chunk.js"
+    "static/js/2.18206339.chunk.js",
+    "static/css/main.cd35727d.chunk.css",
+    "static/js/main.73573bb6.chunk.js"
   ]
 }
