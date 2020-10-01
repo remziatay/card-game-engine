@@ -40,6 +40,43 @@ export const pickPawn = (pawn) => {
   return { type: actionTypes.PICK_PAWN, pawn }
 }
 
+export const focusPawn = (pawn) => {
+  return { type: actionTypes.FOCUS_PAWN, pawn }
+}
+
+export function attack (pawnNode, opponentNode) {
+  return (dispatch, getState) => {
+    // const state = getState()
+    pawnNode.style.transform = 'none'
+    const rect = pawnNode.getBoundingClientRect()
+    const opRect = opponentNode.getBoundingClientRect()
+    const angle = Math.atan2(opRect.left - rect.left, rect.top - opRect.top)
+    const distance = Math.hypot(opRect.top + opRect.height / 2 - rect.top, opRect.left - rect.left)
+    const animation = pawnNode.animate([
+      {
+        transform: 'none',
+        zIndex: 10
+      },
+      {
+        offset: 0.5,
+        transform: `rotate(${angle}rad) translateY(${distance * 0.2}px)`
+      },
+      {
+        offset: Math.min(0.75, 0.5 + distance / 8000),
+        transform: `rotate(${angle}rad) translateY(${-distance}px)`
+      },
+      {
+        offset: Math.min(1, 0.5 + 6 * distance / 8000),
+        transform: `rotate(${angle}rad) translateY(0px)`,
+        zIndex: 10
+      }
+    ], 800)
+    animation.onfinish = () => {
+      dispatch({ type: actionTypes.ATTACK })
+    }
+  }
+}
+
 export const resizeWindow = (width, height) => {
   return { type: actionTypes.WINDOW_RESIZE, width, height }
 }

@@ -43,6 +43,7 @@ const initialState = {
   cardShadowColor: 'white',
   deckPosition: { x: 0, y: 0 },
   pickedPawn: null,
+  focusedPawn: null,
   handSize: '.3em',
   focusSize: '1em',
   pickSize: '.4em'
@@ -60,6 +61,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.PUT_CARD: return putCard(state)
     case actionTypes.SET_DECK_POSITION: return updateObject(state, { deckPosition: action.position })
     case actionTypes.PICK_PAWN: return updateObject(state, { pickedPawn: action.pawn })
+    case actionTypes.FOCUS_PAWN: return focusPawn(state, action.pawn)
+    case actionTypes.ATTACK: return attack(state)
     case actionTypes.WINDOW_RESIZE: return windowResize(state, action.width, action.height)
     default: return state
   }
@@ -122,6 +125,18 @@ function putCard (state) {
     pickedCardPosition: null,
     pickedCardRotation: originalRotation,
     fakeCardIndex: null
+  })
+}
+
+function focusPawn (state, pawn) {
+  return updateObject(state, { focusedPawn: pawn })
+}
+
+function attack (state) {
+  return updateObject(state, {
+    pickedPawn: null,
+    focusedPawn: null,
+    opponentBoard: state.opponentBoard.filter(pawn => pawn.key !== state.focusedPawn.key)
   })
 }
 

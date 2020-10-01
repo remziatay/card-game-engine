@@ -8,5 +8,7 @@ export const MOVE_FAKE_CARD = 'MOVE_FAKE_CARD'
 export const PUT_CARD = 'PUT_CARD'
 export const SET_DECK_POSITION = 'SET_DECK_POSITION'
 export const PICK_PAWN = 'PICK_PAWN'
+export const FOCUS_PAWN = 'FOCUS_PAWN'
+export const ATTACK = 'ATTACK'
 
 export const WINDOW_RESIZE = 'WINDOW_RESIZE'

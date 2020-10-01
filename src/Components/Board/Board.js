@@ -60,33 +60,10 @@ class Board extends React.Component {
     this.props.moveFakeCard(null)
   }
 
-  attack = op => {
+  attack = () => {
     const pawn = this.ref.current.children[this.props.board.findIndex(card => card.key === this.props.pickedPawn.key)]
-    const opponent = this.opRef.current.children[this.props.opponentBoard.findIndex(card => card.key === op.key)]
-    pawn.style.transform = 'none'
-    const rect = pawn.getBoundingClientRect()
-    const opRect = opponent.getBoundingClientRect()
-    const angle = Math.atan2(opRect.left - rect.left, rect.top - opRect.top)
-    const distance = Math.hypot(opRect.top + opRect.height / 2 - rect.top, opRect.left - rect.left)
-    pawn.animate([
-      {
-        transform: 'none',
-        zIndex: 10
-      },
-      {
-        offset: 0.5,
-        transform: `rotate(${angle}rad) translateY(${distance * 0.2}px)`
-      },
-      {
-        offset: Math.min(0.75, 0.5 + distance / 8000),
-        transform: `rotate(${angle}rad) translateY(${-distance}px)`
-      },
-      {
-        offset: Math.min(1, 0.5 + 6 * distance / 8000),
-        transform: `rotate(${angle}rad) translateY(0px)`,
-        zIndex: 10
-      }
-    ], 800)
+    const opponent = this.opRef.current.children[this.props.opponentBoard.findIndex(card => card.key === this.props.focusedPawn.key)]
+    this.props.attack(pawn, opponent)
   }
 
   render () {
@@ -129,12 +106,14 @@ const mapStateToProps = state => ({
   fakeCard: state.cards.fakeCardIndex !== null,
   fakeCardOrder: 2 * state.cards.fakeCardIndex - 1,
   cardSize: state.cards.pickSize,
-  pickedPawn: state.cards.pickedPawn
+  pickedPawn: state.cards.pickedPawn,
+  focusedPawn: state.cards.focusedPawn
 })
 
 const mapDispatchToProps = dispatch => ({
   moveFakeCard: index => dispatch(actionCreators.moveFakeCard(index)),
-  putCard: () => dispatch(actionCreators.putCard())
+  putCard: () => dispatch(actionCreators.putCard()),
+  attack: (pawnNode, opponentNode) => dispatch(actionCreators.attack(pawnNode, opponentNode))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board)

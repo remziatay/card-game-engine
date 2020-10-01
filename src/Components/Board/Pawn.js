@@ -11,7 +11,17 @@ class Pawn extends React.Component {
 
   mouseUp = evt => {
     if (!this.props.opponent || !this.props.pickedPawn) return
-    this.props.attack(this.props.info)
+    this.props.attack()
+  }
+
+  mouseEnter = evt => {
+    if (!this.props.opponent || !this.props.pickedPawn) return
+    this.props.focusPawn(this.props.info)
+  }
+
+  mouseLeave = evt => {
+    if (!this.props.opponent || !this.props.pickedPawn) return
+    this.props.focusPawn(null)
   }
 
   render () {
@@ -23,7 +33,9 @@ class Pawn extends React.Component {
         boxShadow: this.props.picked && '0 4px 2px 0 rgba(0,0,0,0.5)'
       }}
       onMouseDown={this.mouseDown}
-      onMouseUp={this.mouseUp} >
+      onMouseUp={this.mouseUp}
+      onMouseEnter={this.mouseEnter}
+      onMouseLeave={this.mouseLeave} >
         { this.props.noContent || <>
           <div className={styles.Float + ' ' + styles.Attack}>{this.props.info.attack}</div>
           <div className={styles.Float + ' ' + styles.Health}>{this.props.info.health}</div>
@@ -38,7 +50,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  pickPawn: pawn => dispatch(actionCreators.pickPawn(pawn))
+  pickPawn: pawn => dispatch(actionCreators.pickPawn(pawn)),
+  focusPawn: pawn => dispatch(actionCreators.focusPawn(pawn))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Pawn)
