@@ -98,15 +98,15 @@ class Board extends React.Component {
     )
 
     return (
-      <div className={styles.Board}>
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <div className={styles.Board} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp}
+        onMouseLeave={this.mouseLeave}>
         <div ref={this.opRef} className={styles.Line} style={{ borderBottom: '3px dotted gray' }}>
           {this.props.opponentBoard.map(card =>
             <Pawn opponent attack={this.attack} key={card.key} info={card}
               style={{ fontSize: this.props.cardSize }}/>)}
         </div>
-        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-        <div ref={this.ref} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp}
-          onMouseLeave={this.mouseLeave} className={styles.Line}>
+        <div ref={this.ref} className={styles.Line}>
           {this.props.board.map((card, i) => (
             <Pawn key={card.key} info={card} picked={this.props.pickedPawn?.key === card.key} style={{
               order: 2 * i,
