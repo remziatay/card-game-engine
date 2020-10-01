@@ -25,8 +25,8 @@ class Pawn extends React.Component {
       onMouseDown={this.mouseDown}
       onMouseUp={this.mouseUp} >
         { this.props.noContent || <>
-          <div className={styles.Float + ' ' + styles.Ball}>6</div>
-          <div className={styles.Float + ' ' + styles.Ball2}>8</div>
+          <div className={styles.Float + ' ' + styles.Attack}>{this.props.info.attack}</div>
+          <div className={styles.Float + ' ' + styles.Health}>{this.props.info.health}</div>
         </>}
       </div>
     )

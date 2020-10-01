@@ -5,12 +5,17 @@ import { updateObject } from '../utility'
 const initialDeck = Array(30).fill().map((_, i) => ({
   key: i,
   title: `${i}. card`,
-  background: `rgb(${[0, 0, 0].map(_ => Math.random() * 256 | 0)})`
+  background: `rgb(${[0, 0, 0].map(_ => Math.random() * 256 | 0)})`,
+  mana: Math.floor(1 + Math.random() * 8),
+  attack: Math.floor(1 + Math.random() * 7),
+  health: Math.floor(1 + Math.random() * 8)
 }))
 
 const initialOpponentBoard = Array(9).fill().map((_, i) => ({
   key: i,
-  background: `rgb(${[0, 0, 0].map(_ => Math.random() * 256 | 0)})`
+  background: `rgb(${[0, 0, 0].map(_ => Math.random() * 256 | 0)})`,
+  attack: Math.floor(1 + Math.random() * 7),
+  health: Math.floor(1 + Math.random() * 8)
 }))
 
 const originalRotation = { x: 15, y: 0 }

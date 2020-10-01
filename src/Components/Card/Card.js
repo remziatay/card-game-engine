@@ -11,9 +11,9 @@ class Card extends React.Component {
           <>
             <div className={styles.Egg} style={{ background: this.props.info.background }}></div>
             <div className={styles.Text}>{this.props.info?.title}</div>
-            <div className={styles.Float + ' ' + styles.Ball}>6</div>
-            <div className={styles.Float + ' ' + styles.Ball2}>8</div>
-            <div className={styles.Float + ' ' + styles.Mana}>5</div>
+            <div className={styles.Float + ' ' + styles.Attack}>{this.props.info.attack}</div>
+            <div className={styles.Float + ' ' + styles.Health}>{this.props.info.health}</div>
+            <div className={styles.Float + ' ' + styles.Mana}>{this.props.info.mana}</div>
           </>
           }
           {this.props.hasBackface &&
