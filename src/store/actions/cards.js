@@ -45,6 +45,7 @@ export const focusPawn = (pawn) => {
 }
 
 function canAttack (state) {
+  if (state.focusedPawn.realHealth <= 0) return false
   return true
 }
 
@@ -53,7 +54,7 @@ export function attack (pawnNode, opponentNode) {
     const state = getState().cards
     if (!canAttack(state)) return dispatch({ type: actionTypes.ATTACK_CANCEL })
     const [pawn, opponent] = [state.pickedPawn, state.focusedPawn]
-    dispatch({ type: actionTypes.ATTACK_START })
+    dispatch({ type: actionTypes.ATTACK_START, pawnKey: pawn.key, opponentKey: opponent.key })
 
     pawnNode.style.transform = 'none'
     const rect = pawnNode.getBoundingClientRect()
@@ -78,9 +79,9 @@ export function attack (pawnNode, opponentNode) {
         transform: `rotate(${angle}rad) translateY(0px)`,
         zIndex: 10
       }
-    ], 800)
+    ], 8000)
     animation.onfinish = () => {
-      dispatch({ type: actionTypes.ATTACK, pawn, opponent })
+      dispatch({ type: actionTypes.ATTACK, pawnKey: pawn.key, opponentKey: opponent.key })
       if (getState().cards.animation === pawn.key + '-' + opponent.key) {
         dispatch({ type: actionTypes.ATTACKS_END })
       }

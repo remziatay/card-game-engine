@@ -5,7 +5,7 @@ import styles from './Pawn.module.css'
 
 class Pawn extends React.Component {
   mouseDown = () => {
-    if (this.props.opponent) return
+    if (this.props.opponent || this.props.info?.sleeping) return
     this.props.pickPawn(this.props.info)
   }
 
@@ -30,7 +30,8 @@ class Pawn extends React.Component {
         ...this.props.style,
         background: this.props.info?.background,
         transform: this.props.picked && 'scale(1.2, 1.2)',
-        boxShadow: this.props.picked && '0 4px 2px 0 rgba(0,0,0,0.5)'
+        boxShadow: this.props.noContent || this.props.opponent || (!this.props.info?.sleeping
+          ? '0 0 8px 4px green' : this.props.picked && '0 4px 2px 0 rgba(0,0,0,0.5)')
       }}
       onMouseDown={this.mouseDown}
       onMouseUp={this.mouseUp}

@@ -16,7 +16,7 @@ const initialOpponentBoard = Array(9).fill().map((_, i) => ({
   background: `rgb(${[0, 0, 0].map(_ => Math.random() * 256 | 0)})`,
   attack: Math.floor(1 + Math.random() * 7),
   health: Math.floor(1 + Math.random() * 8)
-}))
+})).map(p => ({ ...p, realHealth: p.health }))
 
 const originalRotation = { x: 15, y: 0 }
 
@@ -63,9 +63,9 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_DECK_POSITION: return updateObject(state, { deckPosition: action.position })
     case actionTypes.PICK_PAWN: return updateObject(state, { pickedPawn: action.pawn })
     case actionTypes.FOCUS_PAWN: return focusPawn(state, action.pawn)
-    case actionTypes.ATTACK_START: return attackStart(state)
+    case actionTypes.ATTACK_START: return attackStart(state, action.pawnKey, action.opponentKey)
     case actionTypes.ATTACK_CANCEL: return attackCancel(state)
-    case actionTypes.ATTACK: return attack(state, action.pawn, action.opponent)
+    case actionTypes.ATTACK: return attack(state, action.pawnKey, action.opponentKey)
     case actionTypes.ATTACKS_END: return attacksEnd(state)
     case actionTypes.WINDOW_RESIZE: return windowResize(state, action.width, action.height)
     default: return state
@@ -122,8 +122,9 @@ function unpickCard (state) {
 
 function putCard (state) {
   if (state.board.length === 5) return unpickCard(state)
+  const pawn = updateObject(state.pickedCard, { sleeping: false, realHealth: state.pickedCard.health })
   return updateObject(state, {
-    board: [...state.board.slice(0, state.fakeCardIndex), state.pickedCard, ...state.board.slice(state.fakeCardIndex)],
+    board: [...state.board.slice(0, state.fakeCardIndex), pawn, ...state.board.slice(state.fakeCardIndex)],
     hand: state.hand.filter(card => card.key !== state.pickedCard.key),
     pickedCard: null,
     pickedCardPosition: null,
@@ -136,31 +137,41 @@ function focusPawn (state, pawn) {
   return updateObject(state, { focusedPawn: pawn })
 }
 
-function attackStart (state) {
-  return updateObject(state, {
-    pickedPawn: null,
-    focusedPawn: null,
-    animation: state.pickedPawn.key + '-' + state.focusedPawn.key
-    // opponentBoard: state.opponentBoard.filter(pawn => pawn.key !== state.focusedPawn.key)
-  })
-}
-
 function attackCancel (state) {
   return updateObject(state, {
     pickedPawn: null,
     focusedPawn: null
-    // opponentBoard: state.opponentBoard.filter(pawn => pawn.key !== state.focusedPawn.key)
   })
 }
 
-function attack (state, pawn, opponent) {
+function attackStart (state, pawnKey, opponentKey) {
+  const pawn = state.board.find(p => p.key === pawnKey)
+  const opponent = state.opponentBoard.find(p => p.key === opponentKey)
+  const newPawn = updateObject(pawn, { sleeping: true, realHealth: pawn.realHealth - opponent.attack })
+  const newOpponent = updateObject(opponent, { realHealth: opponent.realHealth - pawn.attack })
   return updateObject(state, {
-    opponentBoard: state.opponentBoard.map(pawn => pawn.key === opponent.key ? updateObject(pawn, { health: 0 }) : pawn)
+    pickedPawn: null,
+    focusedPawn: null,
+    animation: state.pickedPawn.key + '-' + state.focusedPawn.key,
+    board: state.board.map(p => p.key === pawn.key ? newPawn : p),
+    opponentBoard: state.opponentBoard.map(op => op.key === opponent.key ? newOpponent : op)
+  })
+}
+
+function attack (state, pawnKey, opponentKey) {
+  const pawn = state.board.find(p => p.key === pawnKey)
+  const opponent = state.opponentBoard.find(p => p.key === opponentKey)
+  const newPawn = updateObject(pawn, { health: pawn.health - opponent.attack })
+  const newOpponent = updateObject(opponent, { health: opponent.health - pawn.attack })
+  return updateObject(state, {
+    board: state.board.map(p => p.key === pawn.key ? newPawn : p),
+    opponentBoard: state.opponentBoard.map(op => op.key === opponent.key ? newOpponent : op)
   })
 }
 
 function attacksEnd (state) {
   return updateObject(state, {
+    board: state.board.filter(pawn => pawn.health > 0),
     opponentBoard: state.opponentBoard.filter(pawn => pawn.health > 0)
   })
 }
