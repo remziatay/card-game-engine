@@ -44,6 +44,7 @@ const initialState = {
   deckPosition: { x: 0, y: 0 },
   pickedPawn: null,
   focusedPawn: null,
+  animation: null,
   handSize: '.3em',
   focusSize: '1em',
   pickSize: '.4em'
@@ -62,7 +63,10 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_DECK_POSITION: return updateObject(state, { deckPosition: action.position })
     case actionTypes.PICK_PAWN: return updateObject(state, { pickedPawn: action.pawn })
     case actionTypes.FOCUS_PAWN: return focusPawn(state, action.pawn)
-    case actionTypes.ATTACK: return attack(state)
+    case actionTypes.ATTACK_START: return attackStart(state)
+    case actionTypes.ATTACK_CANCEL: return attackCancel(state)
+    case actionTypes.ATTACK: return attack(state, action.pawn, action.opponent)
+    case actionTypes.ATTACKS_END: return attacksEnd(state)
     case actionTypes.WINDOW_RESIZE: return windowResize(state, action.width, action.height)
     default: return state
   }
@@ -132,11 +136,32 @@ function focusPawn (state, pawn) {
   return updateObject(state, { focusedPawn: pawn })
 }
 
-function attack (state) {
+function attackStart (state) {
   return updateObject(state, {
     pickedPawn: null,
     focusedPawn: null,
-    opponentBoard: state.opponentBoard.filter(pawn => pawn.key !== state.focusedPawn.key)
+    animation: state.pickedPawn.key + '-' + state.focusedPawn.key
+    // opponentBoard: state.opponentBoard.filter(pawn => pawn.key !== state.focusedPawn.key)
+  })
+}
+
+function attackCancel (state) {
+  return updateObject(state, {
+    pickedPawn: null,
+    focusedPawn: null
+    // opponentBoard: state.opponentBoard.filter(pawn => pawn.key !== state.focusedPawn.key)
+  })
+}
+
+function attack (state, pawn, opponent) {
+  return updateObject(state, {
+    opponentBoard: state.opponentBoard.map(pawn => pawn.key === opponent.key ? updateObject(pawn, { health: 0 }) : pawn)
+  })
+}
+
+function attacksEnd (state) {
+  return updateObject(state, {
+    opponentBoard: state.opponentBoard.filter(pawn => pawn.health > 0)
   })
 }
 

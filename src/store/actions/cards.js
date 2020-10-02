@@ -44,9 +44,17 @@ export const focusPawn = (pawn) => {
   return { type: actionTypes.FOCUS_PAWN, pawn }
 }
 
+function canAttack (state) {
+  return true
+}
+
 export function attack (pawnNode, opponentNode) {
   return (dispatch, getState) => {
-    // const state = getState()
+    const state = getState().cards
+    if (!canAttack(state)) return dispatch({ type: actionTypes.ATTACK_CANCEL })
+    const [pawn, opponent] = [state.pickedPawn, state.focusedPawn]
+    dispatch({ type: actionTypes.ATTACK_START })
+
     pawnNode.style.transform = 'none'
     const rect = pawnNode.getBoundingClientRect()
     const opRect = opponentNode.getBoundingClientRect()
@@ -72,7 +80,10 @@ export function attack (pawnNode, opponentNode) {
       }
     ], 800)
     animation.onfinish = () => {
-      dispatch({ type: actionTypes.ATTACK })
+      dispatch({ type: actionTypes.ATTACK, pawn, opponent })
+      if (getState().cards.animation === pawn.key + '-' + opponent.key) {
+        dispatch({ type: actionTypes.ATTACKS_END })
+      }
     }
   }
 }
