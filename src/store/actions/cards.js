@@ -44,6 +44,10 @@ export const focusPawn = (pawn) => {
   return { type: actionTypes.FOCUS_PAWN, pawn }
 }
 
+export const removePawn = (pawnKey) => {
+  return { type: actionTypes.REMOVE_PAWN, pawnKey }
+}
+
 function canAttack (state) {
   if (state.focusedPawn.realHealth <= 0) return false
   return true
@@ -79,7 +83,7 @@ export function attack (pawnNode, opponentNode) {
         transform: `rotate(${angle}rad) translateY(0px)`,
         zIndex: 10
       }
-    ], 8000)
+    ], 800)
     animation.onfinish = () => {
       dispatch({ type: actionTypes.ATTACK, pawnKey: pawn.key, opponentKey: opponent.key })
       if (getState().cards.animation === pawn.key + '-' + opponent.key) {

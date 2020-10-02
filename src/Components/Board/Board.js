@@ -60,10 +60,9 @@ class Board extends React.Component {
     this.props.moveFakeCard(null)
   }
 
-  attack = () => {
+  attack = (opponentNode) => {
     const pawn = this.ref.current.children[this.props.board.findIndex(card => card.key === this.props.pickedPawn.key)]
-    const opponent = this.opRef.current.children[this.props.opponentBoard.findIndex(card => card.key === this.props.focusedPawn.key)]
-    this.props.attack(pawn, opponent)
+    this.props.attack(pawn, opponentNode)
   }
 
   render () {

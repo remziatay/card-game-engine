@@ -11,7 +11,7 @@ class Pawn extends React.Component {
 
   mouseUp = evt => {
     if (!this.props.opponent || !this.props.pickedPawn) return
-    this.props.attack()
+    this.props.attack(this.ref.current)
   }
 
   mouseEnter = evt => {
@@ -24,9 +24,23 @@ class Pawn extends React.Component {
     this.props.focusPawn(null)
   }
 
+  ref = React.createRef()
+
+  componentDidUpdate () {
+    if (this.props.info?.dead) {
+      this.ref.current.animate([
+        { opacity: 1 },
+        { opacity: 0 }
+      ], {
+        duration: 800,
+        fill: 'forwards'
+      }).onfinish = () => this.props.removePawn(this.props.info.key)
+    }
+  }
+
   render () {
     return (
-      <div role='button' tabIndex={0} className={styles.Egg} style={{
+      <div role='button' tabIndex={0} ref={this.ref} className={styles.Egg} style={{
         ...this.props.style,
         background: this.props.info?.background,
         transform: this.props.picked && 'scale(1.2, 1.2)',
@@ -52,7 +66,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   pickPawn: pawn => dispatch(actionCreators.pickPawn(pawn)),
-  focusPawn: pawn => dispatch(actionCreators.focusPawn(pawn))
+  focusPawn: pawn => dispatch(actionCreators.focusPawn(pawn)),
+  removePawn: key => dispatch(actionCreators.removePawn(key))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Pawn)

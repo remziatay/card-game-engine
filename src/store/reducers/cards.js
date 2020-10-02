@@ -3,7 +3,7 @@ import * as actionTypes from '../actions/actionTypes'
 import { updateObject } from '../utility'
 
 const initialDeck = Array(30).fill().map((_, i) => ({
-  key: i,
+  key: `p${i}`,
   title: `${i}. card`,
   background: `rgb(${[0, 0, 0].map(_ => Math.random() * 256 | 0)})`,
   mana: Math.floor(1 + Math.random() * 8),
@@ -12,7 +12,7 @@ const initialDeck = Array(30).fill().map((_, i) => ({
 }))
 
 const initialOpponentBoard = Array(9).fill().map((_, i) => ({
-  key: i,
+  key: `op${i}`,
   background: `rgb(${[0, 0, 0].map(_ => Math.random() * 256 | 0)})`,
   attack: Math.floor(1 + Math.random() * 7),
   health: Math.floor(1 + Math.random() * 8)
@@ -63,6 +63,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_DECK_POSITION: return updateObject(state, { deckPosition: action.position })
     case actionTypes.PICK_PAWN: return updateObject(state, { pickedPawn: action.pawn })
     case actionTypes.FOCUS_PAWN: return focusPawn(state, action.pawn)
+    case actionTypes.REMOVE_PAWN: return removePawn(state, action.pawnKey)
     case actionTypes.ATTACK_START: return attackStart(state, action.pawnKey, action.opponentKey)
     case actionTypes.ATTACK_CANCEL: return attackCancel(state)
     case actionTypes.ATTACK: return attack(state, action.pawnKey, action.opponentKey)
@@ -137,6 +138,13 @@ function focusPawn (state, pawn) {
   return updateObject(state, { focusedPawn: pawn })
 }
 
+function removePawn (state, pawnKey) {
+  return updateObject(state, {
+    board: state.board.filter(pawn => pawn.key !== pawnKey),
+    opponentBoard: state.opponentBoard.filter(pawn => pawn.key !== pawnKey)
+  })
+}
+
 function attackCancel (state) {
   return updateObject(state, {
     pickedPawn: null,
@@ -171,8 +179,8 @@ function attack (state, pawnKey, opponentKey) {
 
 function attacksEnd (state) {
   return updateObject(state, {
-    board: state.board.filter(pawn => pawn.health > 0),
-    opponentBoard: state.opponentBoard.filter(pawn => pawn.health > 0)
+    board: state.board.map(pawn => pawn.health > 0 ? pawn : updateObject(pawn, { dead: true })),
+    opponentBoard: state.opponentBoard.map(pawn => pawn.health > 0 ? pawn : updateObject(pawn, { dead: true }))
   })
 }
 
