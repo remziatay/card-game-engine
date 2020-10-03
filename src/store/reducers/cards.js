@@ -61,8 +61,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.MOVE_FAKE_CARD: return updateObject(state, { fakeCardIndex: action.index })
     case actionTypes.PUT_CARD: return putCard(state)
     case actionTypes.SET_DECK_POSITION: return updateObject(state, { deckPosition: action.position })
-    case actionTypes.PICK_PAWN: return updateObject(state, { pickedPawn: action.pawn })
-    case actionTypes.FOCUS_PAWN: return focusPawn(state, action.pawn)
+    case actionTypes.PICK_PAWN: return pickPawn(state, action.pawnKey)
+    case actionTypes.FOCUS_PAWN: return focusPawn(state, action.pawnKey)
     case actionTypes.REMOVE_PAWN: return removePawn(state, action.pawnKey)
     case actionTypes.ATTACK_START: return attackStart(state, action.pawnKey, action.opponentKey)
     case actionTypes.ATTACK_CANCEL: return attackCancel(state)
@@ -134,8 +134,34 @@ function putCard (state) {
   })
 }
 
-function focusPawn (state, pawn) {
-  return updateObject(state, { focusedPawn: pawn })
+export function canAttack (state, pawnKey, opponentKey) {
+  const pawn = state.board.find(p => p.key === pawnKey)
+  const opponent = state.opponentBoard.find(p => p.key === opponentKey)
+  if (opponent.realHealth <= 0) return false
+  if (pawn.sleeping) return false
+  return true
+}
+
+function pickPawn (state, pawnKey) {
+  if (pawnKey === null) { return updateObject(state, { pickedPawn: null }) }
+  const pawn = state.board.find(p => p.key === pawnKey)
+  return updateObject(state, { pickedPawn: pawn })
+}
+
+function focusPawn (state, pawnKey) {
+  if (pawnKey === null) {
+    return updateObject(state, {
+      focusedPawn: null,
+      pickedPawn: updateObject(state.pickedPawn, { dies: false })
+    })
+  }
+  const pawn = state.opponentBoard.find(p => p.key === pawnKey)
+  if (!canAttack(state, state.pickedPawn.key, pawn.key)) return state
+
+  return updateObject(state, {
+    focusedPawn: updateObject(pawn, { dies: pawn.realHealth - state.pickedPawn.attack <= 0 }),
+    pickedPawn: updateObject(state.pickedPawn, { dies: state.pickedPawn.realHealth - pawn.attack <= 0 })
+  })
 }
 
 function removePawn (state, pawnKey) {

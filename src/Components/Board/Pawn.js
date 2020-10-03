@@ -2,11 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../store/actions'
 import styles from './Pawn.module.css'
+import skull from './skull.svg'
 
 class Pawn extends React.Component {
   mouseDown = () => {
     if (this.props.opponent || this.props.info?.sleeping) return
-    this.props.pickPawn(this.props.info)
+    this.props.pickPawn(this.props.info.key)
   }
 
   mouseUp = evt => {
@@ -16,7 +17,7 @@ class Pawn extends React.Component {
 
   mouseEnter = evt => {
     if (!this.props.opponent || !this.props.pickedPawn) return
-    this.props.focusPawn(this.props.info)
+    this.props.focusPawn(this.props.info.key)
   }
 
   mouseLeave = evt => {
@@ -39,6 +40,8 @@ class Pawn extends React.Component {
   }
 
   render () {
+    const dies = (this.props.focusedPawn?.key === this.props.info?.key && this.props.focusedPawn?.dies) ||
+    (this.props.picked && this.props.pickedPawn?.dies)
     return (
       <div role='button' tabIndex={0} ref={this.ref} className={styles.Egg} style={{
         ...this.props.style,
@@ -54,6 +57,7 @@ class Pawn extends React.Component {
         { this.props.noContent || <>
           <div className={styles.Float + ' ' + styles.Attack}>{this.props.info.attack}</div>
           <div className={styles.Float + ' ' + styles.Health}>{this.props.info.health}</div>
+          {dies && <img alt='dies' src={skull}/>}
         </>}
       </div>
     )
@@ -61,12 +65,13 @@ class Pawn extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  focusedPawn: state.cards.focusedPawn,
   pickedPawn: state.cards.pickedPawn
 })
 
 const mapDispatchToProps = dispatch => ({
-  pickPawn: pawn => dispatch(actionCreators.pickPawn(pawn)),
-  focusPawn: pawn => dispatch(actionCreators.focusPawn(pawn)),
+  pickPawn: key => dispatch(actionCreators.pickPawn(key)),
+  focusPawn: key => dispatch(actionCreators.focusPawn(key)),
   removePawn: key => dispatch(actionCreators.removePawn(key))
 })
 

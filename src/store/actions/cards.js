@@ -1,3 +1,4 @@
+import { canAttack } from '../reducers/cards'
 import * as actionTypes from './actionTypes'
 
 export const drawCard = () => {
@@ -36,27 +37,24 @@ export const setDeckPosition = (position) => {
   return { type: actionTypes.SET_DECK_POSITION, position }
 }
 
-export const pickPawn = (pawn) => {
-  return { type: actionTypes.PICK_PAWN, pawn }
+export const pickPawn = (pawnKey) => {
+  return { type: actionTypes.PICK_PAWN, pawnKey }
 }
 
-export const focusPawn = (pawn) => {
-  return { type: actionTypes.FOCUS_PAWN, pawn }
+export const focusPawn = (pawnKey) => {
+  return { type: actionTypes.FOCUS_PAWN, pawnKey }
 }
 
 export const removePawn = (pawnKey) => {
   return { type: actionTypes.REMOVE_PAWN, pawnKey }
 }
 
-function canAttack (state) {
-  if (state.focusedPawn.realHealth <= 0) return false
-  return true
-}
-
 export function attack (pawnNode, opponentNode) {
   return (dispatch, getState) => {
     const state = getState().cards
-    if (!canAttack(state)) return dispatch({ type: actionTypes.ATTACK_CANCEL })
+    if (!canAttack(state, state.pickedPawn.key, state.focusedPawn.key)) {
+      return dispatch({ type: actionTypes.ATTACK_CANCEL })
+    }
     const [pawn, opponent] = [state.pickedPawn, state.focusedPawn]
     dispatch({ type: actionTypes.ATTACK_START, pawnKey: pawn.key, opponentKey: opponent.key })
 

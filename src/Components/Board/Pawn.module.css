@@ -4,6 +4,8 @@
   width: 13em;
   height: 17.5em;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .Float {
@@ -33,4 +35,8 @@
   bottom: 0;
   margin-right: 0.18em;
   margin-bottom: 0.18em;
+}
+
+.Egg > img {
+  width: 100%;
 }
