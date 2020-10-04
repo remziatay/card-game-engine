@@ -19,6 +19,7 @@ class FocusableCard extends React.Component {
   }
 
   mouseDown = evt => {
+    if (!this.props.turn) return
     this.props.pickCard()
     this.props.moveCard(evt.pageX, evt.pageY)
   }
@@ -65,7 +66,8 @@ class FocusableCard extends React.Component {
 
 const mapStateToProps = state => ({
   pickedCard: state.cards.pickedCard,
-  focusedSize: state.cards.focusSize
+  focusedSize: state.cards.focusSize,
+  turn: state.cards.turn
 })
 
 const mapDispatchToProps = dispatch => ({

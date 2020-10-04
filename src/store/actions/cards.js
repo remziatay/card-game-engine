@@ -1,6 +1,10 @@
 import { canAttack } from '../reducers/cards'
 import * as actionTypes from './actionTypes'
 
+export const endTurn = () => {
+  return { type: actionTypes.END_TURN }
+}
+
 export const drawCard = () => {
   return { type: actionTypes.DRAW_CARD }
 }

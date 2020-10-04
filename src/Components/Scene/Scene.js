@@ -22,13 +22,23 @@ class Scene extends React.Component {
     else if (this.props.pickedPawn) this.props.unpickPawn()
   }
 
+  componentDidMount () {
+    if (this.props.turn) {
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          this.props.drawCard()
+        }, 500 * (i + 1))
+      }
+    }
+  }
+
   render () {
     return (
       <>
         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
         <div onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} className={styles.Scene} >
           <div>
-            <button onClick={this.props.drawCard}>Draw Card</button>
+            <button onClick={this.props.endTurn}>{this.props.turn ? 'End Turn' : 'Not Your Turn'}</button>
           </div>
           <Board/>
           <BottomPane/>
@@ -60,10 +70,12 @@ const mapStateToProps = state => ({
   pickedCardPosition: state.cards.pickedCardPosition,
   pickedCardRotation: `rotateX(${state.cards.pickedCardRotation.x}deg) rotateY(${state.cards.pickedCardRotation.y}deg)`,
   pickedSize: state.cards.pickSize,
-  pickedPawn: state.cards.pickedPawn
+  pickedPawn: state.cards.pickedPawn,
+  turn: state.cards.turn
 })
 
 const mapDispatchToProps = dispatch => ({
+  endTurn: () => dispatch(actionCreators.endTurn()),
   drawCard: () => dispatch(actionCreators.drawCard()),
   unpickCard: () => dispatch(actionCreators.unpickCard()),
   moveCard: cumulativeRafSchd((x, y) => dispatch(actionCreators.moveCard(x, y))),

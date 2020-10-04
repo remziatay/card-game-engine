@@ -14,5 +14,6 @@ export const ATTACK_START = 'ATTACK_START'
 export const ATTACK_CANCEL = 'ATTACK_CANCEL'
 export const ATTACK = 'ATTACK'
 export const ATTACKS_END = 'ATTACKS_END'
+export const END_TURN = 'END_TURN'
 
 export const WINDOW_RESIZE = 'WINDOW_RESIZE'

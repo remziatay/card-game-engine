@@ -26,6 +26,7 @@ const cardWidth = window.innerHeight * windowCardRatio / cardRatio
 const pickedRatio = 1.2
 
 const initialState = {
+  turn: true,
   deck: initialDeck,
   hand: [],
   board: [],
@@ -52,6 +53,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.END_TURN: return endTurn(state)
     case actionTypes.DRAW_CARD: return drawRandomCard(state)
     case actionTypes.FOCUS_CARD: return updateObject(state, { focusedCard: action.card })
     case actionTypes.PICK_CARD: return pickCard(state)
@@ -81,14 +83,34 @@ function windowResize (state, width, height) {
   })
 }
 
-function drawRandomCard (state) {
-  if (state.hand.length === 9 || state.deck.length === 0) return state
-  const random = Math.floor(Math.random() * state.deck.length)
-  const randomCard = state.deck[random]
+function endTurn (state) {
+  const draw = state.turn ? {} : randomCard(state.deck, state.hand)
+
   return updateObject(state, {
-    deck: [...state.deck.slice(0, random), ...state.deck.slice(random + 1)],
-    hand: state.hand.concat(randomCard)
+    turn: !state.turn,
+    pickedCard: null,
+    pickedCardPosition: null,
+    pickedCardRotation: originalRotation,
+    fakeCardIndex: null,
+    pickedPawn: null,
+    focusedPawn: null,
+    board: state.board.map(pawn => updateObject(pawn, { sleeping: false })),
+    ...draw
   })
+}
+
+function randomCard (deck, hand) {
+  if (hand.length === 9 || deck.length === 0) return {}
+  const random = Math.floor(Math.random() * deck.length)
+  const randomCard = deck[random]
+  return {
+    deck: [...deck.slice(0, random), ...deck.slice(random + 1)],
+    hand: hand.concat(randomCard)
+  }
+}
+
+function drawRandomCard (state) {
+  return updateObject(state, { ...randomCard(state.deck, state.hand) })
 }
 
 function pickCard (state) {
@@ -123,7 +145,7 @@ function unpickCard (state) {
 
 function putCard (state) {
   if (state.board.length === 5) return unpickCard(state)
-  const pawn = updateObject(state.pickedCard, { sleeping: false, realHealth: state.pickedCard.health })
+  const pawn = updateObject(state.pickedCard, { sleeping: true, realHealth: state.pickedCard.health })
   return updateObject(state, {
     board: [...state.board.slice(0, state.fakeCardIndex), pawn, ...state.board.slice(state.fakeCardIndex)],
     hand: state.hand.filter(card => card.key !== state.pickedCard.key),
