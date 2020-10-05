@@ -7,9 +7,16 @@ import Card from '../Card/Card'
 import cumulativeRafSchd from '../../lib/cumulativeRafSchd'
 import { debounce } from '../../lib/util'
 import BottomPane from '../BottomPane/BottomPane'
+import Arrow from '../Arrow/Arrow'
 
 class Scene extends React.Component {
+  state = {
+    from: null,
+    to: { x: 100, y: 30 }
+  }
+
   mouseMove = evt => {
+    this.setState({ to: { x: evt.pageX, y: evt.pageY } })
     if (this.props.pickedCard) {
       evt.persist()
       this.props.moveCard(evt.pageX, evt.pageY)
@@ -35,6 +42,7 @@ class Scene extends React.Component {
   render () {
     return (
       <>
+        <Arrow from={{ x: 500, y: 200 }} to={this.state.to} />
         {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
         <div onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} className={styles.Scene} >
           <div>

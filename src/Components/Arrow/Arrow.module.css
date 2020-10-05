@@ -1,0 +1,61 @@
+.Container {
+  --gap: 10px;
+  position: fixed;
+  border: 2px solid slateblue;
+  z-index: 500;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--gap);
+  transform-origin: top center;
+  /*transition: all 0.2s;*/
+  font-size: 0.5em;
+  pointer-events: none;
+  width: 6em;
+  /*perspective: 500px;
+  perspective-origin: center;*/
+}
+
+.Container > * {
+  flex: 0 0 auto;
+}
+
+.Head {
+  margin-top: 2.5em;
+  transform: rotate(180deg);
+}
+
+.Piece {
+  width: 40%;
+  animation: move infinite 0.8s linear;
+}
+
+.Piece:nth-last-child(2) {
+  animation: move infinite 0.8s linear, fade-out infinite 0.8s ease-in;
+  opacity: 0;
+}
+
+.Piece:first-child {
+  animation: move infinite 0.8s linear, fade-out reverse infinite 0.8s ease-in;
+  opacity: 1;
+}
+
+@keyframes fade-out {
+  from,
+  20% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes move {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(calc(100% + var(--gap)));
+  }
+}
