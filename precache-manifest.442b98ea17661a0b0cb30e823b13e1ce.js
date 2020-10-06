@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "354d7b1ee9bc7d799b922fc24b511348",
+    "revision": "ee4dc67528ef8d61615edd6a0b6ce70d",
     "url": "/card-game-engine/index.html"
   },
   {
-    "revision": "b92df870ca47c4c915c7",
-    "url": "/card-game-engine/static/css/main.28da3446.chunk.css"
+    "revision": "661b5434241624250ddf",
+    "url": "/card-game-engine/static/css/main.ca76f6ec.chunk.css"
   },
   {
-    "revision": "6fa6d1534a2751806fa4",
-    "url": "/card-game-engine/static/js/2.03cb1795.chunk.js"
+    "revision": "df9a0597464ef4b14220",
+    "url": "/card-game-engine/static/js/2.574473d1.chunk.js"
   },
   {
     "revision": "c64c486544348f10a6d6c716950bc223",
-    "url": "/card-game-engine/static/js/2.03cb1795.chunk.js.LICENSE.txt"
+    "url": "/card-game-engine/static/js/2.574473d1.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "b92df870ca47c4c915c7",
-    "url": "/card-game-engine/static/js/main.eddd9d40.chunk.js"
+    "revision": "661b5434241624250ddf",
+    "url": "/card-game-engine/static/js/main.2c7e9b21.chunk.js"
   },
   {
     "revision": "45f1f145cf279279601a",
