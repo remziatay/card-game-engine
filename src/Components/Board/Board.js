@@ -7,31 +7,57 @@ import Pawn from './Pawn'
 
 class Board extends React.Component {
   state = {
-    columns: []
+    pawnPositions: [],
+    opponentPositions: []
   }
 
   ref = React.createRef()
   opRef = React.createRef()
 
-  setColumns = cumulativeRafSchd(() => {
-    const columns = Array.from(this.ref.current.children).map(card => {
-      const rect = card.getBoundingClientRect()
-      return rect.left + rect.width / 2
+  updateColumns = () => {
+    // Sort of a memo function for positions
+    const boards = [
+      { length: this.props.board.length, children: this.ref.current.children, key: 'pawnPositions' },
+      { length: this.props.opponentBoard.length, children: this.opRef.current.children, key: 'opponentPositions' }
+    ]
+    let changed = false
+    const pushChanges = () => {
+      if (!changed) return
+      this.props.setPawnPositions(
+        this.state.pawnPositions[this.props.board.length],
+        this.state.opponentPositions[this.props.opponentBoard.length]
+      )
+    }
+
+    boards.forEach(({ length, children, key }) => {
+      if (this.state[key][length]) return
+      changed = true
+      const columns = Array.from(children).map(card => {
+        const rect = card.getBoundingClientRect()
+        return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+      })
+      this.setState(state => {
+        const positions = [...state[key]]
+        positions[length] = columns
+        return { [key]: Array.from(positions) }
+      }, pushChanges)
     })
-    this.setState({ columns })
+  }
+
+  resetColumns = cumulativeRafSchd(() => {
+    this.setState({ pawnPositions: [], opponentPositions: [] }, this.updateColumns)
   })
 
   componentDidUpdate () {
-    if (this.props.board.length === this.state.columns.length) return
-    this.setColumns()
+    this.updateColumns()
   }
 
   componentDidMount () {
-    window.addEventListener('resize', this.setColumns)
+    window.addEventListener('resize', this.resetColumns)
   }
 
   componentWillUnmount () {
-    window.removeEventListener('resize', this.setColumns)
+    window.removeEventListener('resize', this.resetColumns)
   }
 
   mouseUp = evt => {
@@ -43,19 +69,19 @@ class Board extends React.Component {
   }
 
   orderFakeCard = cumulativeRafSchd(evt => {
-    let index = this.state.columns.findIndex(x => evt.pageX < x)
-    if (index === -1) index = this.state.columns.length
+    let index = this.state.pawnPositions[this.props.board.length].findIndex(({ x }) => evt.pageX < x)
+    if (index === -1) index = this.state.pawnPositions[this.props.board.length].length
     this.props.moveFakeCard(index)
   })
 
   mouseMove = evt => {
-    if (!this.state.columns.length || !this.props.pickedCard || this.props.board.length === 5) return
+    if (!this.props.pickedCard || this.props.board.length === 5) return
     evt.persist()
     this.orderFakeCard(evt)
   }
 
   mouseLeave = () => {
-    if (!this.state.columns.length || !this.props.pickedCard || this.props.board.length === 5) return
+    if (!this.props.pickedCard || this.props.board.length === 5) return
     this.orderFakeCard.cancel()
     this.props.moveFakeCard(null)
   }
@@ -112,7 +138,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   moveFakeCard: index => dispatch(actionCreators.moveFakeCard(index)),
   putCard: () => dispatch(actionCreators.putCard()),
-  attack: (pawnNode, opponentNode) => dispatch(actionCreators.attack(pawnNode, opponentNode))
+  attack: (pawnNode, opponentNode) => dispatch(actionCreators.attack(pawnNode, opponentNode)),
+  setPawnPositions: (pawns, opponents) => dispatch(actionCreators.setPawnPositions(pawns, opponents))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board)

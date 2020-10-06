@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Scene.module.css'
 import { actionCreators } from '../../store/actions'
 import { connect } from 'react-redux'
@@ -9,77 +9,75 @@ import { debounce } from '../../lib/util'
 import BottomPane from '../BottomPane/BottomPane'
 import Arrow from '../Arrow/Arrow'
 
-class Scene extends React.Component {
-  state = {
-    from: null,
-    to: { x: 100, y: 30 }
-  }
+function Scene (props) {
+  const [arrowTo, setArrowTo] = useState(null)
 
-  mouseMove = evt => {
-    this.setState({ to: { x: evt.pageX, y: evt.pageY } })
-    if (this.props.pickedCard) {
+  useEffect(() => {
+    if (!props.turn) return
+    for (let i = 0; i < 3; i++) setTimeout(props.drawCard, 500 * (i + 1))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (props.arrow?.from && !props.arrow.to) setArrowTo({ ...props.arrow.from })
+    else setArrowTo(null)
+  }, [props.arrow])
+
+  const moveArrow = cumulativeRafSchd((x, y) => setArrowTo({ x, y }))
+
+  const mouseMove = evt => {
+    if (props.arrow?.from && !props.arrow.to) moveArrow(evt.pageX, evt.pageY)
+
+    if (props.pickedCard) {
       evt.persist()
-      this.props.moveCard(evt.pageX, evt.pageY)
-      this.props.resetRotation()
+      props.moveCard(evt.pageX, evt.pageY)
+      props.resetRotation()
     }
   }
 
-  mouseUp = () => {
-    if (this.props.pickedCard) this.props.unpickCard()
-    else if (this.props.pickedPawn) this.props.unpickPawn()
+  const mouseUp = () => {
+    if (props.pickedCard) props.unpickCard()
+    else if (props.pickedPawn) props.unpickPawn()
   }
 
-  componentDidMount () {
-    if (this.props.turn) {
-      for (let i = 0; i < 3; i++) {
-        setTimeout(() => {
-          this.props.drawCard()
-        }, 500 * (i + 1))
-      }
-    }
-  }
-
-  render () {
-    return (
-      <>
-        <Arrow from={{ x: 500, y: 200 }} to={this.state.to} />
-        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-        <div onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} className={styles.Scene} >
-          <div>
-            <button onClick={this.props.endTurn}>{this.props.turn ? 'End Turn' : 'Not Your Turn'}</button>
-          </div>
-          <Board/>
-          <BottomPane/>
+  return (
+    <>
+      { props.arrow && (props.arrow.to || arrowTo) && <Arrow from={props.arrow.from} to={props.arrow.to || arrowTo} /> }
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+      <div onMouseMove={mouseMove} onMouseUp={mouseUp} className={styles.Scene} >
+        <div>
+          <button onClick={props.endTurn}>{props.turn ? 'End Turn' : 'Not Your Turn'}</button>
         </div>
+        <Board/>
+        <BottomPane/>
+      </div>
 
-        {this.props.pickedCard &&
-            <Card info={this.props.pickedCard} containerStyle={{
-              fontSize: this.props.pickedSize,
+      {props.pickedCard &&
+            <Card info={props.pickedCard} containerStyle={{
+              fontSize: props.pickedSize,
               position: 'fixed',
-              left: this.props.pickedCardPosition.x,
-              top: this.props.pickedCardPosition.y,
+              left: props.pickedCardPosition.x,
+              top: props.pickedCardPosition.y,
               pointerEvents: 'none',
               zIndex: 10,
               perspective: '500px'
             }}
             style={{
-              transform: this.props.pickedCardRotation
+              transform: props.pickedCardRotation
             }}/>
-        }
-      </>
-    )
-  }
+      }
+    </>
+  )
 }
 
 const mapStateToProps = state => ({
   pickedCard: state.cards.pickedCard,
-  pickedCardWidth: state.cards.pickedCardWidth,
-  pickedCardHeight: state.cards.pickedCardWidth * state.cards.cardRatio,
   pickedCardPosition: state.cards.pickedCardPosition,
   pickedCardRotation: `rotateX(${state.cards.pickedCardRotation.x}deg) rotateY(${state.cards.pickedCardRotation.y}deg)`,
   pickedSize: state.cards.pickSize,
   pickedPawn: state.cards.pickedPawn,
-  turn: state.cards.turn
+  turn: state.cards.turn,
+  arrow: state.cards.arrow
 })
 
 const mapDispatchToProps = dispatch => ({

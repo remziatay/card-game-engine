@@ -8,6 +8,7 @@ class Arrow extends React.Component {
     const [{ x: x1, y: y1 }, { x: x2, y: y2 }] = [this.props.from, this.props.to]
     const distance = Math.hypot(x2 - x1, y2 - y1)
     const angle = Math.atan2(x1 - x2, y2 - y1)
+    const arrowCount = Math.max(1, Math.floor(distance / 100))
     return (
       <div className={styles.Container} style={{
         left: x1 + 'px',
@@ -15,11 +16,8 @@ class Arrow extends React.Component {
         height: distance + 'px',
         transform: `translateX(-50%) rotate(${angle}rad)`
       }}>
-        <ArrowPiece className={styles.Piece}/>
-        <ArrowPiece className={styles.Piece}/>
-        <ArrowPiece className={styles.Piece}/>
-        <ArrowPiece className={styles.Piece}/>
-        <ArrowPiece className={styles.Piece}/>
+        {new Array(arrowCount).fill().map((_, i) =>
+          <ArrowPiece key={arrowCount + '-' + i} className={styles.Piece}/>)}
         <ArrowHead className={styles.Head}/>
       </div>
     )

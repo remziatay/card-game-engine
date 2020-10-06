@@ -1,7 +1,7 @@
 .Container {
-  --gap: 10px;
+  --gap: 0.8em;
   position: fixed;
-  border: 2px solid slateblue;
+  /*border: 2px solid slateblue;*/
   z-index: 500;
   display: flex;
   flex-flow: column;
@@ -10,24 +10,22 @@
   gap: var(--gap);
   transform-origin: top center;
   /*transition: all 0.2s;*/
-  font-size: 0.5em;
   pointer-events: none;
-  width: 6em;
   /*perspective: 500px;
   perspective-origin: center;*/
 }
 
 .Container > * {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
 }
 
 .Head {
-  margin-top: 2.5em;
+  width: 100%;
   transform: rotate(180deg);
 }
 
 .Piece {
-  width: 40%;
+  width: 35%;
   animation: move infinite 0.8s linear;
 }
 
@@ -53,9 +51,9 @@
 
 @keyframes move {
   from {
-    transform: translateY(0px);
+    transform: rotate(180deg) translateY(calc(50% + var(--gap)));
   }
   to {
-    transform: translateY(calc(100% + var(--gap)));
+    transform: rotate(180deg) translateY(-50%);
   }
 }

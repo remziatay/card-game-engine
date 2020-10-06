@@ -46,6 +46,9 @@ const initialState = {
   pickedPawn: null,
   focusedPawn: null,
   animation: null,
+  arrow: null, // { from: null, to: null }
+  pawnPositions: [],
+  opponentPositions: [],
   handSize: '.3em',
   focusSize: '1em',
   pickSize: '.4em'
@@ -70,6 +73,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.ATTACK_CANCEL: return attackCancel(state)
     case actionTypes.ATTACK: return attack(state, action.pawnKey, action.opponentKey)
     case actionTypes.ATTACKS_END: return attacksEnd(state)
+    case actionTypes.SET_PAWN_POSITIONS: return setPawnPositions(state, action.pawnPositions, action.opponentPositions)
     case actionTypes.WINDOW_RESIZE: return windowResize(state, action.width, action.height)
     default: return state
   }
@@ -165,24 +169,30 @@ export function canAttack (state, pawnKey, opponentKey) {
 }
 
 function pickPawn (state, pawnKey) {
-  if (pawnKey === null) { return updateObject(state, { pickedPawn: null }) }
-  const pawn = state.board.find(p => p.key === pawnKey)
-  return updateObject(state, { pickedPawn: pawn })
+  if (pawnKey === null) { return updateObject(state, { pickedPawn: null, arrow: null }) }
+  const pawnIndex = state.board.findIndex(p => p.key === pawnKey)
+  return updateObject(state, {
+    pickedPawn: state.board[pawnIndex],
+    arrow: { from: state.pawnPositions[pawnIndex], to: null }
+  })
 }
 
 function focusPawn (state, pawnKey) {
   if (pawnKey === null) {
     return updateObject(state, {
       focusedPawn: null,
-      pickedPawn: updateObject(state.pickedPawn, { dies: false })
+      pickedPawn: updateObject(state.pickedPawn, { dies: false }),
+      arrow: updateObject(state.arrow, { to: null })
     })
   }
-  const pawn = state.opponentBoard.find(p => p.key === pawnKey)
+  const pawnIndex = state.opponentBoard.findIndex(p => p.key === pawnKey)
+  const pawn = state.opponentBoard[pawnIndex]
   if (!canAttack(state, state.pickedPawn.key, pawn.key)) return state
 
   return updateObject(state, {
     focusedPawn: updateObject(pawn, { dies: pawn.realHealth - state.pickedPawn.attack <= 0 }),
-    pickedPawn: updateObject(state.pickedPawn, { dies: state.pickedPawn.realHealth - pawn.attack <= 0 })
+    pickedPawn: updateObject(state.pickedPawn, { dies: state.pickedPawn.realHealth - pawn.attack <= 0 }),
+    arrow: updateObject(state.arrow, { to: state.opponentPositions[pawnIndex] })
   })
 }
 
@@ -191,6 +201,10 @@ function removePawn (state, pawnKey) {
     board: state.board.filter(pawn => pawn.key !== pawnKey),
     opponentBoard: state.opponentBoard.filter(pawn => pawn.key !== pawnKey)
   })
+}
+
+function setPawnPositions (state, pawnPositions, opponentPositions) {
+  return updateObject(state, { pawnPositions, opponentPositions })
 }
 
 function attackCancel (state) {
@@ -210,7 +224,8 @@ function attackStart (state, pawnKey, opponentKey) {
     focusedPawn: null,
     animation: state.pickedPawn.key + '-' + state.focusedPawn.key,
     board: state.board.map(p => p.key === pawn.key ? newPawn : p),
-    opponentBoard: state.opponentBoard.map(op => op.key === opponent.key ? newOpponent : op)
+    opponentBoard: state.opponentBoard.map(op => op.key === opponent.key ? newOpponent : op),
+    arrow: null
   })
 }
 

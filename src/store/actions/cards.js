@@ -41,6 +41,10 @@ export const setDeckPosition = (position) => {
   return { type: actionTypes.SET_DECK_POSITION, position }
 }
 
+export const setPawnPositions = (pawnPositions, opponentPositions) => {
+  return { type: actionTypes.SET_PAWN_POSITIONS, pawnPositions, opponentPositions }
+}
+
 export const pickPawn = (pawnKey) => {
   return { type: actionTypes.PICK_PAWN, pawnKey }
 }
