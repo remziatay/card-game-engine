@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Hand from '../Hand/Hand'
 import styles from './BottomPane.module.css'
 import Deck from './Deck/Deck'
@@ -13,18 +14,20 @@ class BottomPane extends React.Component {
           <div className={styles.Container} style={{
             zIndex: 2,
             display: 'flex',
-            flexFlow: 'column nowrap',
+            flexFlow: 'column-reverse nowrap',
             alignItems: 'center',
-            gap: '0.5em'
+            gap: '0.5em',
+            minHeight: '0px'
           }}>
+            <Hand/>
             <img alt='CHAR' src={char} style={{
               border: '3px solid brown',
               borderRadius: '50% 50% 0 0',
-              padding: '0.2em',
-              width: '100px',
-              height: '120px'
+              padding: '0.3em',
+              fontSize: this.props.cardSize,
+              width: '13em',
+              height: '17.5em'
             }}/>
-            <Hand/>
           </div>
           <div className={styles.Container} >
             <Deck/>
@@ -36,4 +39,8 @@ class BottomPane extends React.Component {
   }
 }
 
-export default BottomPane
+const mapStateToProps = state => ({
+  cardSize: state.cards.pickSize
+})
+
+export default connect(mapStateToProps)(BottomPane)

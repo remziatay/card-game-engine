@@ -1,6 +1,6 @@
 .Scene {
   display: grid;
-  grid-template-rows: auto 10fr auto;
+  grid-template-rows: auto 10fr 5fr;
   position: relative;
   width: 100%;
   height: 100vh;
