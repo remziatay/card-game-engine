@@ -205,10 +205,13 @@ function removePawn (state, pawnKey) {
 
 function setPawnPositions (state, pawnPositions, opponentPositions) {
   let arrow = state.arrow
-  if (state.pickedPawn) {
-    const pawnIndex = state.board.findIndex(p => p.key === state.pickedPawn.key)
-    arrow = updateObject(arrow, { from: pawnPositions[pawnIndex] })
-  }
+
+  let pawnIndex = state.board.findIndex(p => p.key === state.pickedPawn?.key)
+  if (pawnIndex >= 0) arrow = updateObject(arrow, { from: pawnPositions[pawnIndex] })
+
+  pawnIndex = state.opponentBoard.findIndex(p => p.key === state.focusedPawn?.key)
+  if (pawnIndex >= 0)arrow = updateObject(arrow, { to: opponentPositions[pawnIndex] })
+
   return updateObject(state, { pawnPositions, opponentPositions, arrow })
 }
 
