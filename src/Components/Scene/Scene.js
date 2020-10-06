@@ -18,10 +18,7 @@ function Scene (props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    if (props.arrow?.from && !props.arrow.to) setArrowTo({ ...props.arrow.from })
-    else setArrowTo(null)
-  }, [props.arrow])
+  useEffect(() => { if (!props.arrow?.from || props.arrow.to) setArrowTo(null) }, [props.arrow])
 
   const moveArrow = cumulativeRafSchd((x, y) => setArrowTo({ x, y }))
 
