@@ -25,6 +25,16 @@ const windowCardRatio = 0.20
 const cardWidth = window.innerHeight * windowCardRatio / cardRatio
 const pickedRatio = 1.2
 
+function getCardSizes () {
+  const refHeigt = window.innerHeight / 626
+  const handSize = 0.3 * refHeigt + 'em'
+  const focusSize = 1 * refHeigt + 'em'
+  const pickSize = 0.4 * refHeigt + 'em'
+  return { handSize, focusSize, pickSize }
+}
+
+const { handSize, focusSize, pickSize } = getCardSizes()
+
 const initialState = {
   turn: true,
   deck: initialDeck,
@@ -49,9 +59,9 @@ const initialState = {
   arrow: null, // { from: null, to: null }
   pawnPositions: [],
   opponentPositions: [],
-  handSize: '.3em',
-  focusSize: '1em',
-  pickSize: '.4em'
+  handSize,
+  focusSize,
+  pickSize
 }
 
 const reducer = (state = initialState, action) => {
@@ -80,11 +90,8 @@ const reducer = (state = initialState, action) => {
 }
 
 function windowResize (state, width, height) {
-  const cardWidth = height * windowCardRatio / state.cardRatio
-  return updateObject(state, {
-    cardWidth,
-    pickedCardWidth: cardWidth * state.pickedRatio
-  })
+  const { handSize, focusSize, pickSize } = getCardSizes()
+  return updateObject(state, { handSize, focusSize, pickSize })
 }
 
 function endTurn (state) {
