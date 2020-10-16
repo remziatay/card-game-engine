@@ -1,8 +1,10 @@
 .Container {
   padding-top: 2.5em;
+  outline: none;
 }
 
 .Card {
+  outline: none;
   position: relative;
   background: aqua;
   border: 2px solid black;
@@ -53,7 +55,7 @@
 }
 
 .Float {
-  font-size: 3em;
+  font-size: 2.9em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,7 +64,7 @@
   border-radius: 100%;
   width: 1em;
   height: 1em;
-  padding-bottom: 0.2em;
+  line-height: 1em;
 }
 
 .Attack {

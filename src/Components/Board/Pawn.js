@@ -45,6 +45,7 @@ class Pawn extends React.Component {
     return (
       <div role='button' tabIndex={0} ref={this.ref} className={styles.Egg} style={{
         ...this.props.style,
+        outline: 'none',
         background: this.props.info?.background,
         transform: this.props.picked && 'scale(1.2, 1.2)',
         boxShadow: !this.props.turn || this.props.noContent || this.props.opponent || (!this.props.info?.sleeping
