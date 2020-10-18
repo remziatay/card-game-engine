@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/card-game-engine/static/css/main.b3f52d71.chunk.css",
-    "main.js": "/card-game-engine/static/js/main.b189080a.chunk.js",
-    "main.js.map": "/card-game-engine/static/js/main.b189080a.chunk.js.map",
+    "main.css": "/card-game-engine/static/css/main.26f5e16b.chunk.css",
+    "main.js": "/card-game-engine/static/js/main.1ef9364b.chunk.js",
+    "main.js.map": "/card-game-engine/static/js/main.1ef9364b.chunk.js.map",
     "runtime-main.js": "/card-game-engine/static/js/runtime-main.f76411d4.js",
     "runtime-main.js.map": "/card-game-engine/static/js/runtime-main.f76411d4.js.map",
     "static/js/2.0026fa95.chunk.js": "/card-game-engine/static/js/2.0026fa95.chunk.js",
     "static/js/2.0026fa95.chunk.js.map": "/card-game-engine/static/js/2.0026fa95.chunk.js.map",
     "index.html": "/card-game-engine/index.html",
-    "precache-manifest.435a0e731c50ad77f32345358a70a43c.js": "/card-game-engine/precache-manifest.435a0e731c50ad77f32345358a70a43c.js",
+    "precache-manifest.b2d946955090db203bb72b79ce02ad34.js": "/card-game-engine/precache-manifest.b2d946955090db203bb72b79ce02ad34.js",
     "service-worker.js": "/card-game-engine/service-worker.js",
-    "static/css/main.b3f52d71.chunk.css.map": "/card-game-engine/static/css/main.b3f52d71.chunk.css.map",
+    "static/css/main.26f5e16b.chunk.css.map": "/card-game-engine/static/css/main.26f5e16b.chunk.css.map",
     "static/js/2.0026fa95.chunk.js.LICENSE.txt": "/card-game-engine/static/js/2.0026fa95.chunk.js.LICENSE.txt",
     "static/media/card-texture.jpg": "/card-game-engine/static/media/card-texture.15ee4520.jpg",
     "static/media/skull.svg": "/card-game-engine/static/media/skull.44d42c36.svg",
@@ -19,7 +19,7 @@
   "entrypoints": [
     "static/js/runtime-main.f76411d4.js",
     "static/js/2.0026fa95.chunk.js",
-    "static/css/main.b3f52d71.chunk.css",
-    "static/js/main.b189080a.chunk.js"
+    "static/css/main.26f5e16b.chunk.css",
+    "static/js/main.1ef9364b.chunk.js"
   ]
 }
